@@ -1,0 +1,80 @@
+#direct{    
+    padding: 30px 15%;
+    height: 80vh;
+}
+
+#direct-box{
+    border: 1px solid #bcbcbc;
+    border-radius: 7px;
+    height: 100%;
+    display: flex;
+}
+
+#chat{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    width: 100%;
+}
+
+#direct-contatos{
+    width: 40%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-right: 1px solid #bcbcbc;
+}
+
+#contato{
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #bcbcbc;
+}
+
+#contato:hover{
+    cursor: pointer;
+    background-color: #e4e4e4;
+}
+
+#contato #fotoAvatar:hover{
+    transform: scale(1.05);
+}
+
+#contato #fotoAvatar:active{
+    transform: scale(1);
+}
+
+#fotoAvatar{
+    margin-right: 5px;
+}
+
+@media only screen and (max-width: 768px) {
+    
+    #direct{
+        padding: 30px 5px;
+    }
+
+    #direct-box{
+        flex-direction: column;
+    }
+
+    #direct-contatos{
+        width: 100%;
+        max-height: 300px;
+        height: auto;
+    }
+
+    #chat{
+        height: 380px;
+    }
+
+    #direct-box{
+        height: auto;
+    }
+
+    #InputBusca > div{
+        width: 100%;
+    }
+}

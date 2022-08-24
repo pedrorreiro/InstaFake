@@ -1,0 +1,75 @@
+#mensagens{
+    flex: 2;
+    width: 100%;
+    overflow-y: scroll;
+    display: block;
+    padding: 15px 10px;
+    flex-direction: column;
+    box-sizing: border-box;
+
+}
+
+.mensagem{
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 10px;
+    max-width: 100%;
+}
+
+.mensagem span{
+    word-wrap: break-word;
+}
+
+.minha{
+    background-color: #efefef;
+}
+
+.naoMinha{
+    border: 1px solid #d6d6d6;
+    background-color: #ffffff;
+}
+
+#header-chat{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #bcbcbc;
+}
+
+#header-chat:hover{
+    cursor: pointer;
+}
+
+#header-chat p{
+    margin: 0;
+}
+
+#footer-chat{
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+#footer-chat input{
+    width: 100%;
+    border: 1px solid #bcbcbc;
+    border-radius: 7px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+#enviar{
+    margin: 0 10px;
+}
+
+#enviar:hover{
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    #header-chat{
+        display: none;
+    }
+}

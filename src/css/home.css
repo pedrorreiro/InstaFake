@@ -1,0 +1,404 @@
+header {
+    padding: 10px 20%;
+    display: flex;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.Insta-Box{
+    padding: 10px 20%;
+}
+
+#LogoHeader {
+    width: 120px;
+    height: auto;
+    margin-right: 20px;
+}
+
+#LogoHeader:hover {
+    cursor: pointer;
+}
+
+#divisorias {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+}
+
+#divisorias>div {
+    display: flex;
+    flex-direction: row;
+}
+
+#right-side {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#nav {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+}
+
+#me {
+    display: inline-flex;
+    margin-left: 25px;
+    vertical-align: top;
+    margin-bottom: 50px;
+}
+
+#post-area {
+    /* margin-left: 25px; */
+    margin-bottom: 50px;
+    text-align: center;
+    border: 1px solid #dbdbdb;
+    /* padding: 15px 15px; */
+    border-radius: 7px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#post-area label {
+    font-size: 1em;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+#post-area .textarea {
+    width: 100%;
+    border: 1px solid #dbdbdb;
+    margin: 10px 0;
+    border-radius: 5px;
+    padding: 10px;
+    height: 50px;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+#post-area input[type="submit"], #inputButton {
+    padding: 10px 0;
+    border-radius: 4px;
+}
+
+#criarPost{
+    padding: 10px 25px;
+    text-align: center;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-family: 'Segoe UI';
+    font-weight: 500;
+    margin-top: 12px;
+    font-size: .9em;
+    color: #fff;
+    border: none;
+    width: 100%;
+    background-color: #0095f6;
+    font-weight: 'bold';
+}
+
+#inputButton{
+    font-weight: 500;
+    font-size: .9em;
+    color: #fff;
+    border: none;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    background-color: #ff2828;
+}
+
+#inputButton:hover{
+    cursor: pointer;
+}
+
+header svg {
+    color: black;
+}
+
+#me:hover {
+    cursor: pointer;
+}
+
+#me-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    font-size: .95em;
+}
+
+#me-info div:first-child {
+    font-weight: 500;
+}
+
+#me-info div:last-child {
+    color: #acabab;
+}
+
+#badge {
+    position: relative;
+    bottom: 7px;
+}
+
+#msgsIcon {
+    width: 30px;
+    height: 20px;
+}
+
+#msgCounter {
+    background-color: #ff3041;
+    color: white;
+    font-size: .8em;
+    text-align: center;
+    border-radius: 50%;
+    width: 18px;
+    position: relative;
+    left: 14px;
+    top: 9px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.nav-item:hover {
+    cursor: pointer;
+}
+
+#InputBusca svg {
+    width: 23px;
+    color: #d7d7d7;
+}
+
+#Account-Menu{
+    position: relative;
+    right: 18px;
+}
+
+header #InputBusca {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #efefef;
+    border-radius: 5px;
+    padding: 0 15px;
+}
+
+header input {
+    background-color: #efefef;
+    border: none;
+    width: 250px;
+    margin-left: 5px;
+}
+
+.Option input {
+    position: absolute;
+    width: 165px;
+    opacity: 0;
+}
+
+input:focus {
+    outline: none;
+    border: none;
+    background-color: #efefef;
+}
+
+header input::placeholder {
+    color: #a9a9a9;
+}
+
+#mensagemNews{
+    /* margin: 30px 20%; */
+    margin-bottom: 0;
+}
+
+#Content {
+    /* padding: 30px 20%; */
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+
+#profilePhotoHeader {
+    width: 25px;
+    height: 25px;
+}
+
+#feed {
+    display: inline-flex;
+    flex-direction: column;
+}
+
+.Post {
+    box-sizing: border-box;
+    width: 400px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px #dbdbdb solid;
+    margin-bottom: 15px;
+    padding: 10px 0;
+}
+
+.Post-Description{
+    font-weight: 500;
+    padding: 0px 10px;
+}
+
+.Post-Footer{
+    display: flex;
+    flex-direction: row;
+    padding: 0px 10px;
+    margin-top: 15px;
+}
+
+.heart:hover{
+    cursor: pointer;
+}
+
+.avatarImgBusca{
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+}
+
+.MuiAutocomplete-root{
+    background-color: #efefef;
+    border-radius: 7px !important;
+}
+
+#feed label:active{
+    display: none;
+}
+
+label.Mui-focused{
+    display: none !important;
+}
+
+.MuiOutlinedInput-notchedOutline{
+    border: none !important;
+}
+
+.Photo {
+    background-color: white;
+    margin: 10px 0;
+}
+
+.Photo img{
+    width: 100%;
+    max-height: 720px;
+    object-fit: cover;
+}
+
+.Post-Header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.Autor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Autor:hover {
+    cursor: pointer;
+}
+
+.Autor>span {
+    margin-left: 10px;
+    font-size: .9em;
+    font-weight: 500;
+}
+
+#OptionsAccount {
+    display: flex;
+    flex-direction: column;
+}
+
+#OptionsAccount .Option {
+    color: white;
+    font-weight: 500;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#OptionsAccount div {
+    background-color: #5a95f6;
+}
+
+#OptionsAccount div:last-child {
+    background-color: #ff3041;
+}
+
+#OptionsAccount .Option:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    transition: all .25;
+}
+
+@media only screen and (max-width: 768px) {
+
+    header, .Insta-Box{
+        padding: 20px 2px;
+    }
+
+    #nav {
+        margin-left: 0;
+        justify-content: center;
+        margin: 15px 0;
+    }
+
+    #Content {
+        flex-direction: column-reverse;
+        padding: 10px 1px;
+    }
+
+    #mensagemNews{
+        margin: 10px 10px;
+    }
+
+    .Post {
+        width: 100%;
+    }
+
+    #divisorias {
+        flex-direction: column;
+    }
+
+    #divisorias>div {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .Insta-Box {
+        width: 100%;
+    }
+
+    #Content-Profile {
+        width: 100% !important;
+    }
+
+    #me {
+        display: none;
+    }
+
+    #post-area {
+        border: none;
+        margin: 0;
+        padding: 15px 5px;
+    }
+}

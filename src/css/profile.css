@@ -1,0 +1,188 @@
+#Content-Profile {
+    width: 60%;
+    margin: auto;
+    text-align: center;
+    padding: 40px 0;
+}
+
+#Profile-Photo {
+    width: 120px;
+    height: 120px;
+    display: inline-block;
+}
+
+#User-Data {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#User-Data-Info {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 50px;
+}
+
+#User-Data-Name {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    font-weight: lighter;
+    display: inline-block;
+}
+
+#User-Public-Data-Desktop{
+    margin-bottom: 20px;
+    display: flex;
+}
+
+#User-Public-Data-Desktop span {
+    display: flex;
+}
+
+#User-Public-Data-Desktop strong {
+    margin-right: 5px;
+}
+
+#User-Public-Data-Desktop span {
+    margin-right: 25px;
+}
+
+#User-Options {
+    text-align: left;
+}
+
+
+#Post-Profile-Area{
+    display: flex;
+    justify-content: flex-start;
+    max-width: 100%;
+}
+
+.Post-Profile{
+    height: 300px;
+    margin: 10px 0;
+    width: 33.33%;
+}
+
+.Post-Profile:not(:last-child):not(:first-child){
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.Post-Profile img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#Profile-Buttons {
+    display: inline-flex;
+    flex-direction: row;
+    margin-left: 30px;
+}
+
+.Profile-Button:hover {
+    cursor: pointer;
+}
+
+.Profile-Button {
+    padding-inline-start: 5px 10px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.Profile-Button:first-child {
+    border: 1px solid #dbdbdb;
+    margin-right: 20px;
+}
+
+.Profile-Button:last-child {
+    background-color: #0095f6;
+    color: white;
+}
+
+#User-Bio {
+    margin-top: 5px;
+}
+
+#erroVoltar {
+    font-size: 1em;
+    color: blue;
+}
+
+#erroVoltar:hover {
+    cursor: pointer;
+}
+
+#User-Public-Data-Mobile {
+    display: none;
+}
+
+#alterarFoto{
+    border: 1px solid #dbdbdb;
+    margin: 30px 5px;
+    padding: 15px;
+}
+
+.listaPessoas{
+    display: flex;
+    flex-direction: column;
+}
+
+.listaPessoas > div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px;
+    background-color: #0095f6;
+    padding: 5px 35px;
+    border-radius: 10px;
+}
+
+.listaPessoas > div > div{
+    width: 35px;
+    height: 35px;
+    margin-right: 8px;
+}
+
+@media only screen and (max-width: 768px) {
+
+    #User-Public-Data-Desktop {
+        display: none;
+    }
+
+    #User-Data{
+        justify-content: center;
+    }
+
+    .Profile-Button{
+        font-size: .8em;
+    }
+
+    #User-Data-Info {
+        margin-left: 15px;
+    }
+
+    #Profile-Buttons{
+        display: flex;
+        margin-left: 0;
+        margin-bottom: 15px;
+    }
+
+    #User-Public-Data-Mobile {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+        border-top: 1px solid #dbdbdb;
+        border-bottom: 1px solid #dbdbdb;
+        padding: 15px 0;
+    }
+
+    #Post-Profile-Area{
+        flex-wrap: wrap;
+    }
+
+}

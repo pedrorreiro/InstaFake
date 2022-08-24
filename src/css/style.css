@@ -1,0 +1,150 @@
+body {
+    background-color: #fafafa;
+}
+
+a{
+    text-decoration: none;
+}
+
+input{
+    box-sizing: border-box;
+}
+
+.Info{
+    text-align: center;
+    padding: 0 5px;
+    font-size: .75em;
+    color: #a7a6a6;
+}
+
+.Info span{
+    font-weight: 500;
+}
+
+.Login, .SignUp{
+    display: inline-block;
+    text-align: center;
+}
+
+.SignUp{
+    width: 100%;
+    padding: 5vh 0;
+}
+
+.SignUp > div{
+    max-width: 350px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.Login{
+    width: 100%;
+    padding: 10vh 0;
+}
+
+.Box{
+    border: 1px #dbdbdb solid;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+#LoginBox{
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: top;
+    width: 350px;
+    margin-top: 50px;
+}
+
+#Login{
+    padding: 40px 40px;
+}
+
+#Esqueceu{
+    padding: 10px 20px;
+}
+
+#Esqueceu span, #JaTem span{
+    color: #00bcd4;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+#Esqueceu{
+    font-size: .8em;
+}
+
+#Login, #Esqueceu{
+    height: auto;
+    margin-bottom: 20px;
+}
+
+#Login>#Logo {
+    margin-bottom: 40px;
+}
+
+form input{
+    width: 100%;
+}
+
+.Box input{
+    display: block;
+    background-color: #fafafa;
+    border: 1px #dbdbdb solid;
+    border-radius: 3px;
+    font-family: 'Segoe UI';
+    padding: 10px 5px;
+    font-size: .75em;
+    margin-bottom: 5px !important;
+}
+
+#SignUp{
+    padding: 40px 20px;
+    margin-bottom: 10px;
+}
+
+#Login input::placeholder {
+    color: #bdbdbd;
+}
+
+input:focus{
+    box-shadow: 0 0 0 0;
+    border: 1px #a7a6a6 solid;
+    background-color: #fafafa;
+    outline: 0;
+}
+
+input[Type="submit"] {
+    font-family: 'Segoe UI';
+    font-weight: 500;
+    margin-top: 12px;
+    font-size: .9em;
+    color: #fff;
+    border: none;
+    width: 100%;
+    background-color: #0095f6;
+    font-weight: 'bold';
+}
+
+.error{
+    margin-top: 15px;
+}
+
+.carregando{
+    margin: 50px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .Login{
+        padding: 0;
+    }
+
+    #Celulares{
+        display: none;
+    }
+
+    #LoginBox{
+        width: 80%;
+    }
+}
