@@ -57,15 +57,15 @@ O projeto já tem um deploy no Heroku, você pode acessá-lo no link abaixo:
 ## Screenshots
 
 - Login
-    ![Login](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/Login%20-%20Mobile.png?raw=true)
+    - ![Login](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/Login%20-%20Mobile.png?raw=true)
 - Cadastro
-    ![Cadastro](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/Cadastro%20-%20Mobile.png?raw=true)
+    - ![Cadastro](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/Cadastro%20-%20Mobile.png?raw=true)
 - Página Inicial (Versão Mobile)
 
-    ![Página Inicial Mobile](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/P%C3%A1gina%20Principal%20-%20Mobile.png?raw=true)
+    - ![Página Inicial Mobile](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/P%C3%A1gina%20Principal%20-%20Mobile.png?raw=true)
 - Perfil (Versão Mobile)
     
-    ![Perfil Mobile](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/Perfil%20-%20Mobile.png?raw=true)
+    - ![Perfil Mobile](https://github.com/pedrorreiro/InstaFake/blob/main/src/img/demo/Perfil%20-%20Mobile.png?raw=true)
 ## Contribuindo
 
 Contribuições são sempre bem-vindas!
