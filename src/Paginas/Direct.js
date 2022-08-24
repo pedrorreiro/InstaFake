@@ -28,6 +28,7 @@ export default function (props) {
 
         // console.log(dadosSeguidores);
         setSeguindoDados(dadosSeguidores);
+        console.log(dadosSeguidores);
 
         if (dadosSeguidores !== null && dadosSeguidores.length > 0) {
             setUserSelecionado(dadosSeguidores[0]);
