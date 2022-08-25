@@ -76,8 +76,6 @@ export default function Home(props) {
 
                 onValue(chatRef, async (snapshot) => {
                     const data = snapshot.val();
-
-                    console.log(data);
                     
                     if (data === null) {
                         setPosts([]);
@@ -103,14 +101,15 @@ export default function Home(props) {
                             postsToShow.push(posts[i]);
                         }
                     }
-                    
+
+                    postsToShow.sort(function(a,b){
+                        return new Date(a.createdAt) - new Date(b.createdAt);
+                      });
+
+                    console.log(postsToShow);
                     setPosts(postsToShow);
 
-                    // array.sort(function(a,b){
-                    //     // Turn your strings into dates, and then subtract them
-                    //     // to get a value that is either negative, positive, or zero.
-                    //     return new Date(b.date) - new Date(a.date);
-                    //   });
+                    
                 });
             }
             getUser();
