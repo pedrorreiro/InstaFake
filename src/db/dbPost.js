@@ -53,7 +53,6 @@ export const excluirPost = async (post) => {
 
 export const getPostById = async (id, user) => {
     return await get(ref(database, `posts/${user}/${id}`)).then(snapshot => {
-        console.log(snapshot.val());
         return snapshot.val();
     }).catch(error => {
         console.log(error);
@@ -61,8 +60,6 @@ export const getPostById = async (id, user) => {
 }
 
 export const likePost = async (p, user) => {
-    console.log(user);
-    console.log(p);
     var post = await getPostById(p.id, p.user);
     console.log(post);
     const username = post.user;
@@ -84,11 +81,11 @@ export const likePost = async (p, user) => {
     else if (post.likesUsers.includes(me)) {
         post.likesUsers = post.likesUsers.filter(user => user !== me);
         post.likes--;
-        console.log("deu like");
+        console.log("deu deslike");
     } else {
         post.likesUsers.push(me);
         post.likes++;
-        console.log("deu dislike");
+        console.log("deu like");
     }
 
     // push(child(ref(database), "posts/" + p.user + "/likesUsers"));

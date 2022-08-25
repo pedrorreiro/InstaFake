@@ -74,8 +74,10 @@ export default function Home(props) {
 
                 const chatRef = ref(database, 'posts/');
 
-                onValue(chatRef, (snapshot) => {
+                onValue(chatRef, async (snapshot) => {
                     const data = snapshot.val();
+
+                    console.log(data);
                     
                     if (data === null) {
                         setPosts([]);
@@ -92,19 +94,23 @@ export default function Home(props) {
 
                     var postsToShow = [];
 
-                    posts.forEach(async post => {
-                        // console.log(post);
-                        if (dados.followingUsers.includes(post.user) || dados.user === post.user) {
-
-                            const u = await getDataUser({displayName: post.user});
+                    for (let i in posts) {
+                        if(dados.followingUsers.includes(posts[i].user) || dados.user === posts[i].user) {
+                            const u = await getDataUser({displayName: posts[i].user});
                   
-                            postsToShow.push({...post, userPhoto: u.photoURL});
+                            posts[i] = {...posts[i], userPhoto: u.photoURL};
+
+                            postsToShow.push(posts[i]);
                         }
-
-                        setPosts(postsToShow);
-                    });
-
+                    }
                     
+                    setPosts(postsToShow);
+
+                    // array.sort(function(a,b){
+                    //     // Turn your strings into dates, and then subtract them
+                    //     // to get a value that is either negative, positive, or zero.
+                    //     return new Date(b.date) - new Date(a.date);
+                    //   });
                 });
             }
             getUser();
@@ -119,11 +125,11 @@ export default function Home(props) {
     };
 
     const renderLike = (post) => {
-
+       
         if (post.likesUsers !== undefined) {
             // console.log(user);
             if (post.likesUsers.includes(userData.user)) {
-                return <FavoriteIcon sx={{ color: "#ed4956" }} onClick={async () => likePost(post, user)} />
+                return <FavoriteIcon sx={{ color: "#ed4956" }} onClick={async () => likePost(post, user)} key={post.id} />
             }
 
             else {
@@ -211,7 +217,7 @@ export default function Home(props) {
                         const linkPerfil = "/" + post.user;
 
                         const dataPost = new Date(post.createdAt);
-
+               
                         const diff = diffTime(dataPost);
 
                         return (
