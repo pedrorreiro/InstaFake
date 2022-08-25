@@ -2,8 +2,10 @@ import React, { useEffect, useState, useContext } from "react";
 import '../css/home.css';
 import { useNavigate, Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { getDataUser, getFollowersPosts, post } from "../db/db";
+import { getDataUser, post } from "../db/db";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { diffTime } from '../Tools/DiffTime';
@@ -12,6 +14,7 @@ import { onValue, ref } from "firebase/database";
 import { Context } from '../Context';
 import { database } from "../db/db";
 import PostMenu from '../Components/PostMenu';
+import { likePost } from "../db/dbPost";
 
 export default function Home(props) {
 
@@ -69,24 +72,33 @@ export default function Home(props) {
                 const dados = await getDataUser(user);
                 setUserData(dados);
 
-                const chatRef = ref(database, 'posts/' + dados.user);
+                const chatRef = ref(database, 'posts/');
 
                 onValue(chatRef, (snapshot) => {
                     const data = snapshot.val();
 
-                    if(data === null){
+                    if (data === null) {
                         setPosts([]);
                         return;
                     }
 
                     var posts = [];
 
-                    Object.values(data).forEach(post => {
-                        if(dados.followingUsers.includes(post.user) || dados.user === post.user) {
-                            posts.push(post);
+                    for (let i in data) {
+                        for (let j in data[i]) {
+                            posts.push(data[i][j]);
+                        }
+                    }
+
+                    var postsToShow = [];
+
+                    posts.forEach(post => {
+                        // console.log(post);
+                        if (dados.followingUsers.includes(post.user) || dados.user === post.user) {
+                            postsToShow.push(post);
                         }
                     });
-                    setPosts(posts);
+                    setPosts(postsToShow);
                 });
             }
             getUser();
@@ -99,6 +111,25 @@ export default function Home(props) {
     const handleClick = event => {
         hiddenFileInput.current.click();
     };
+
+    const renderLike = (post) => {
+
+        if (post.likesUsers !== undefined) {
+            // console.log(user);
+            if (post.likesUsers.includes(userData.user)) {
+                return <FavoriteIcon sx={{ color: "#ed4956" }} onClick={async () => likePost(post, user)} />
+            }
+
+            else {
+                return <FavoriteBorderIcon onClick={async () => likePost(post, user)} />
+            }
+
+        }
+
+        else {
+            return <FavoriteBorderIcon onClick={async () => likePost(post, user)} />
+        }
+    }
 
     return (
         <div id="page">
@@ -141,7 +172,7 @@ export default function Home(props) {
 
                 {!uploading ? <input type="submit" value="Publicar" onClick={async () => {
                     await postar();
-                }} /> : <p style={{marginTop: 20}}>Carregando...</p>}
+                }} /> : <p style={{ marginTop: 20 }}>Carregando...</p>}
             </div> : null}
 
             <div id="Content">
@@ -186,7 +217,7 @@ export default function Home(props) {
                                     </div>
                                     </Link>
 
-                                    <PostMenu setUploading={setUploading} post={post} />
+                                    {post.user === userData.user ? <PostMenu setUploading={setUploading} post={post} /> : null}
 
                                 </div>
 
@@ -195,8 +226,15 @@ export default function Home(props) {
                                 <div className="Post-Description">{post.descricao}</div>
 
                                 <div className="Post-Footer">
-                                    <i className="heart large outline icon"></i>
+
+                                    {renderLike(post)}
                                 </div>
+
+                                <div className="Post-Footer">
+
+                                    <p>Curtido por <strong>{post.likes}</strong> pessoas</p>
+
+                                </div>  
 
                             </div>
                         )

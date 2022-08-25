@@ -346,6 +346,8 @@ export const post = async (post) => {
     post = {...post, nomeImg};
     post.user = user;
 
+    console.log(post);
+
     return uploadBytes(imageRef, post.image).then(async () => {
         //console.log("Upload realizado com sucesso");
 
