@@ -244,7 +244,13 @@ export default function Home(props) {
 
                                 <div className="Post-Footer">
 
-                                    <p>Curtido por <strong>{post.likes}</strong> pessoas</p>
+                                    {post.likes > 0 && post.likes < 3 ? 
+                                        <p>Curtido por <strong>{post.likes}</strong> pessoas</p> 
+                                    : null}
+
+                                    {post.likes > 2 ?
+                                        <p>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p> 
+                                    : null}
 
                                 </div>  
 
