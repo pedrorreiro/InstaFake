@@ -76,7 +76,7 @@ export default function Home(props) {
 
                 onValue(chatRef, (snapshot) => {
                     const data = snapshot.val();
-
+                    
                     if (data === null) {
                         setPosts([]);
                         return;
@@ -92,13 +92,19 @@ export default function Home(props) {
 
                     var postsToShow = [];
 
-                    posts.forEach(post => {
+                    posts.forEach(async post => {
                         // console.log(post);
                         if (dados.followingUsers.includes(post.user) || dados.user === post.user) {
-                            postsToShow.push(post);
+
+                            const u = await getDataUser({displayName: post.user});
+                  
+                            postsToShow.push({...post, userPhoto: u.photoURL});
                         }
+
+                        setPosts(postsToShow);
                     });
-                    setPosts(postsToShow);
+
+                    
                 });
             }
             getUser();
