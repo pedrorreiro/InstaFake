@@ -1,7 +1,5 @@
 import { getDatabase, ref, set, get, push, child, update } from "firebase/database";
-import { app } from "./db";
-
-export const database = getDatabase(app);
+import { database } from "./db";
 
 export const criarConversa = async (me, receiver) => {
     // console.log(me);

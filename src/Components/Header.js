@@ -22,11 +22,9 @@ export default function Header(props) {
 
     const [user] = useContext(Context);
     const [busca, setBusca] = useState("");
-
+    const [open, setOpen] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [allInstaUsers, setAllInstaUsers] = useState([]);
-
-    const [open, setOpen] = React.useState(false);
 
     const handleToggle = () => {
         setOpen(!open);
@@ -52,7 +50,7 @@ export default function Header(props) {
         <header>
             <div id="divisorias">
 
-                <Link to="/InstaFake" ><img id="LogoHeader" alt="logo" src={logo}></img></Link>
+                <Link to="/" ><img id="LogoHeader" alt="logo" src={logo}></img></Link>
 
                 <div id="InputBusca">
                     <SearchIcon id="SearchIcon" />
@@ -120,7 +118,7 @@ export default function Header(props) {
                         <FavoriteBorderIcon />
                     </Link>
 
-                    <div className="nav-item" onClick={handleToggle} id="Account-Menu">
+                    <div className="nav-item" id="Account-Menu">
 
                         {user ? <AccountMenu setUploading={setUploading} /> : null}
 

@@ -86,6 +86,10 @@ a {
     border-radius: 4px;
 }
 
+#post-area input[type="submit"]:hover{
+    cursor: pointer;
+}
+
 #criarPost{
     padding: 10px 25px;
     text-align: center;
@@ -100,6 +104,10 @@ a {
     width: 100%;
     background-color: #0095f6;
     font-weight: 'bold';
+}
+
+#criarPost:hover{
+    cursor: pointer;
 }
 
 #inputButton{
@@ -257,6 +265,10 @@ header input::placeholder {
     flex-direction: row;
     padding: 0px 10px;
     margin-top: 15px;
+}
+
+.opcoesPost:hover{
+    cursor: pointer;
 }
 
 .heart:hover{

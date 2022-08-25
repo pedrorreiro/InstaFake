@@ -2,7 +2,8 @@ import "../css/chat.css";
 import { useEffect, useState } from "react";
 import Avatar from '@mui/material/Avatar';
 import SendIcon from '@mui/icons-material/Send';
-import { sendMsg, database } from "../db/dbChat";
+import { sendMsg } from "../db/dbChat";
+import { database } from "../db/db";
 import { onValue, ref } from "firebase/database";
 import { Link } from "react-router-dom";
 

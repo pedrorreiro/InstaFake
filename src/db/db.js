@@ -1,9 +1,10 @@
 import 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore/lite';
-import { ref, uploadBytes, getStorage, getDownloadURL } from 'firebase/storage';
-
+import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore/lite';
+import { ref, uploadBytes, getStorage, getDownloadURL, deleteObject } from 'firebase/storage';
+import { criarPost } from './dbPost';
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -21,6 +22,8 @@ export const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const storage = getStorage(app);
+
+export const database = getDatabase(app);
 
 export const auth = getAuth();
 
@@ -328,39 +331,51 @@ export const getUserPosts = async (user) => {
 
 export const post = async (post) => {
 
-    //console.log(post);
-    const username = post.user.user;
+    console.log(post);
 
-    const imageRef = ref(storage, `posts/${username}/${"post-" + username + "-" + new Date()}`);
+    const username = post.user;
+
+    const user = await getDataUser({ displayName: username });
+
+    const dataParaPost = new Date().getTime().toString();
+
+    const nomeImg = "post-" + username + "-" + dataParaPost;
+
+    const imageRef = ref(storage, `posts/${username}/${nomeImg}`);
+
+    post = {...post, nomeImg};
+    post.user = user;
 
     return uploadBytes(imageRef, post.image).then(async () => {
         //console.log("Upload realizado com sucesso");
 
         const downloadImage = await getDownloadURL(imageRef);
 
-        await addDoc(collection(db, "posts"), {
-            user: username,
-            userPhoto: post.userPhoto,
-            descricao: post.descricao,
-            photoURL: downloadImage,
-            createdAt: new Date()
+        await criarPost(post, downloadImage);
+
+        await updateDoc(doc(db, "users", user.id), {
+            posts: user.posts + 1
         });
 
-        // const idPost = docRef.id;
+        
+        console.log("Post com sucesso!");
 
     }).catch((e) => {
         console.log("Erro ao realizar upload: " + e);
-    }).then(async (id) => {
+    });
+}
 
-        await updateDoc(doc(db, "users", post.user.id), {
-            posts: post.user.posts + 1
-        });
+export const excluirImgPost = async (post) => {
+    const username = post.user;
 
-        //console.log("A contagem de posts foi atualizado no perfil.")
+    const imageRef = ref(storage, `posts/${username}/${post.nomeImg}`);
 
-        return id;
-    }).catch((e) => {
-        console.log("Erro ao atualizar os posts do usuário usuário: " + e);
+    await deleteObject(imageRef);
+
+    const user = await getDataUser({ displayName: username });
+
+    await updateDoc(doc(db, "users", post.idUser), {
+        posts: user.posts - 1
     });
 }
 
