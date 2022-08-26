@@ -38,7 +38,11 @@ export default function Chat(props) {
 
         const chat = document.getElementById("mensagens");
 
-        chat.scrollTop = chat.scrollHeight;
+        if(chat !== null){
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        
     }, [mensagens])
 
     var elementoMensagens = [];
