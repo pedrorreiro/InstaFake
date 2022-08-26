@@ -25,6 +25,11 @@
     border-right: 1px solid #bcbcbc;
 }
 
+#erroVerificacao h1, h2{
+    text-align: center;
+    margin-top: 15px;
+}
+
 #contato{
     padding: 15px 20px;
     display: flex;

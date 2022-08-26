@@ -29,17 +29,17 @@ export default function Chat(props) {
         onValue(chatRef, (snapshot) => {
             const data = snapshot.val();
             setMensagens(data);
-            //console.log("oi");
-            // rolar para final do chat
-
-            const chat = document.getElementById("mensagens");
-
-            chat.scrollBy(0, 3000000);
-
 
         });
 
     }, [userSelecionado]);
+
+    useEffect(() => {
+
+        const chat = document.getElementById("mensagens");
+
+        chat.scrollTop = chat.scrollHeight;
+    }, [mensagens])
 
     var elementoMensagens = [];
 
@@ -80,7 +80,7 @@ export default function Chat(props) {
 
             <div id="header-chat">
                 {userSelecionado !== null && userSelecionado !== undefined ?
-                
+
                     <Link to={`/${userSelecionado.user}`}>
                         <Avatar src={userSelecionado.photoURL} id="fotoAvatar" />
                     </Link>

@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { diffTime } from '../Tools/DiffTime';
 import Avatar from '@mui/material/Avatar';
+import CircularProgress from '@mui/material/CircularProgress';
 import { Link } from 'react-router-dom';
 import PostMenu from '../Components/PostMenu';
 import Chip from '@mui/material/Chip';
@@ -18,21 +18,11 @@ export default function Feed(props) {
         <div id="feed">
             {posts.length === 0 ?
 
-                <div className="Post">
-                    <div className="Post-Header">
-                        <div className="Autor">
-                            <Avatar alt="Foto de perfil" />
-                            <span></span>
-                        </div>
-
-                        <MoreHorizIcon></MoreHorizIcon>
-
-                    </div>
-
-                    <div className="Photo">
-                        <p>Não há posts ainda. Parece que você não tem amigos :(</p>
-                    </div>
-                    <div className="Post-Description"></div>
+                <div className="Post" style={{textAlign: "center"}}>
+                    
+                    <CircularProgress />
+                                
+             
                 </div>
 
                 : null

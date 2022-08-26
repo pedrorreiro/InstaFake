@@ -8,7 +8,7 @@ import { getDataUser, post } from "../db/db";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert } from 'antd';
-import { onValue, ref } from "firebase/database";
+import { limitToFirst, limitToLast, onValue, ref } from "firebase/database";
 import { Context } from '../Context';
 import { database, enviarEmailVerificacao } from "../db/db";
 import { likePost } from "../db/dbPost";
@@ -74,6 +74,7 @@ export default function Home(props) {
                 const chatRef = ref(database, 'posts/');
 
                 onValue(chatRef, async (snapshot) => {
+                 
                     const data = snapshot.val();
 
                     if (data === null) {

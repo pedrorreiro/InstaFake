@@ -1,7 +1,7 @@
 import '../css/direct.css';
 import { useEffect, useState } from "react";
 import Chat from '../Components/Chat';
-import { getDataUser } from "../db/db";
+import { getDataUser, enviarEmailVerificacao } from "../db/db";
 import Avatar from '@mui/material/Avatar';
 import { Context } from "../Context";
 import { useContext } from "react";
@@ -49,38 +49,53 @@ export default function (props) {
 
     }, [userData]);
 
-    return (
-        <div id="direct">
+    if (user !== null && !user.emailVerified) {
+        return (<div id='erroVerificacao'>
+            <h1>Eii, parece que você ainda não verificou seu e-mail.</h1>
+
+            <h2>Clique <strong className="link" onClick={async () => {
+                const retorno = await enviarEmailVerificacao(user);
+                alert(retorno.msg);
+            }}>aqui</strong> para enviarmos um e-mail de verificação.
+            </h2>
+
+        </div>)
+    }
+
+    else {
+        return (
+            <div id="direct">
 
 
-            {seguindoDados.length > 0 ?
-                <div id="direct-box">
-                    <div id="direct-contatos">
-                        {seguindoDados.map(contato => {
+                {seguindoDados.length > 0 ?
+                    <div id="direct-box">
+                        <div id="direct-contatos">
+                            {seguindoDados.map(contato => {
 
-                            count++;
+                                count++;
 
-                            return (
-                                <div id="contato" key={count} onClick={() => {
-                                    setUserSelecionado(contato);
-                                }}>
-                                    <Avatar src={contato.photoURL} id="fotoAvatar"></Avatar>
-                                    <p>{contato.user}</p>
-                                </div>
+                                return (
+                                    <div id="contato" key={count} onClick={() => {
+                                        setUserSelecionado(contato);
+                                    }}>
+                                        <Avatar src={contato.photoURL} id="fotoAvatar"></Avatar>
+                                        <p>{contato.user}</p>
+                                    </div>
 
-                            )
-                        })}
-                    </div>
+                                )
+                            })}
+                        </div>
 
-                    {userSelecionado !== null ? <Chat userData={userData} userSelecionado={userSelecionado} /> : null}
+                        {userSelecionado !== null ? <Chat userData={userData} userSelecionado={userSelecionado} /> : null}
 
-                </div> : null
-            }
+                    </div> : null
+                }
 
-            {seguindoDados.length <= 0 && user ? <div>
-                <h1 style={{ textAlign: "center" }}>Que pena, você ainda não segue ninguém 😕</h1>
-            </div> : null}
+                {seguindoDados.length <= 0 && user ? <div>
+                    <h1 style={{ textAlign: "center" }}>Que pena, você ainda não segue ninguém 😕</h1>
+                </div> : null}
 
-        </div>
-    )
+            </div>
+        )
+    }
 }

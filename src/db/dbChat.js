@@ -56,8 +56,6 @@ export const sendMsg = async (me, receiver, msg) => {
 
     await update(ref(database), updates);
 
-    console.log("Mensagens enviadas");
-
     // await set(ref(database, "chats/" + me.user + "/" + receiver.user + "/msgs/" + newMsgKey), minhaMensagem);
     // console.log("Enviei mensagem para " + receiver.user);
     // await set(ref(database, "chats/" + receiver.user + "/" + me.user + "/msgs/" + newMsgKey), mensagem);

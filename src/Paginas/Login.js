@@ -73,7 +73,10 @@ function Login(props) {
 
                         {error ? <Alert className="error" severity={error.type}>{error.msg}</Alert> : null}
 
-                        {carregando ? <CircularProgress /> : <input style={camposPreenchidos ? DisableButton : null} type="submit" value={"Entrar"}></input>}
+                        {carregando ? <CircularProgress style={{
+                            marginTop: 10,
+                            width: 30
+                        }}/> : <input style={camposPreenchidos ? DisableButton : null} type="submit" value={"Entrar"}></input>}
 
                     </form>
 
