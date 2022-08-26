@@ -1,7 +1,7 @@
 import 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification, updateEmail } from "firebase/auth";
-import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, deleteDoc, doc, createCustomToken } from 'firebase/firestore/lite';
+import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification, updateEmail, sendPasswordResetEmail } from "firebase/auth";
+import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore/lite';
 import { ref, uploadBytes, getStorage, getDownloadURL, deleteObject } from 'firebase/storage';
 import { criarPost } from './dbPost';
 import { getDatabase } from "firebase/database";
@@ -54,7 +54,7 @@ const registerDB = async (data, auth) => {
                 id: docRef.id
             });
 
-     
+
         await enviarEmailVerificacao(auth.currentUser);
 
         return { sucesso: true, msg: 'Conta criada com sucesso!', type: 'success' };
@@ -68,16 +68,16 @@ const registerDB = async (data, auth) => {
 }
 
 export const enviarEmailVerificacao = async (auth) => {
-    
-        try {
-            await sendEmailVerification(auth);
-    
-            return { sucesso: true, msg: 'Email de verificação enviado com sucesso!', type: 'success' };
-        } catch (e) {
-            console.log("Erro no envio de email de verificação: " + e);
-    
-            return { sucesso: false, msg: 'Ocorreu um erro no sistema. Contate um administrador.', type: 'error' };
-        }
+
+    try {
+        await sendEmailVerification(auth);
+
+        return { sucesso: true, msg: 'Email de verificação enviado com sucesso!', type: 'success' };
+    } catch (e) {
+        console.log("Erro no envio de email de verificação: " + e);
+
+        return { sucesso: false, msg: 'Ocorreu um erro no sistema. Contate um administrador.', type: 'error' };
+    }
 }
 
 export const getUser = () => {
@@ -124,8 +124,8 @@ export const login = async (data) => {
 
     const { email, password } = data;
 
-    return signInWithEmailAndPassword(auth, email, password).then(async() => {
-        
+    return signInWithEmailAndPassword(auth, email, password).then(async () => {
+
         return { sucess: true, msg: 'Login efetuado com sucesso!', type: 'success', user: auth.currentUser };
 
     }).catch(error => {
@@ -180,6 +180,20 @@ export const getAllUsers = async () => {
 
 }
 
+export const getIdByUser = async (user) => {
+    const usersRef = collection(db, "users");
+
+        const q = query(usersRef, where('user', '==', user));
+
+        const result = await getDocs(q);
+
+        const document = result.docs[0];
+
+        const id = (document.data().id);
+
+        return id;
+}
+
 export const changeAvatar = async (file, username) => {
 
     //console.log(username);
@@ -196,15 +210,7 @@ export const changeAvatar = async (file, username) => {
 
         // Pegando o uid da coleção users
 
-        const usersRef = collection(db, "users");
-
-        const q = query(usersRef, where('user', '==', username));
-
-        const result = await getDocs(q);
-
-        const document = result.docs[0];
-
-        const id = (document.data().id);
+        const id = await getIdByUser(auth.currentUser.displayName);
 
         await updateDoc(doc(db, "users", id),
             {
@@ -358,7 +364,7 @@ export const post = async (post) => {
 
     const imageRef = ref(storage, `posts/${username}/${nomeImg}`);
 
-    post = {...post, nomeImg};
+    post = { ...post, nomeImg };
     post.user = user;
 
     console.log(post);
@@ -374,7 +380,7 @@ export const post = async (post) => {
             posts: user.posts + 1
         });
 
-        
+
         console.log("Post com sucesso!");
 
     }).catch((e) => {
@@ -396,12 +402,42 @@ export const excluirImgPost = async (post) => {
     });
 }
 
-export const giveAdmin = async (user) => {
-    auth.setCustomUserClaims(user.uid, { admin: true });
+export const changeEmail = async (newEmail) => {
+
+    return updateEmail(auth.currentUser, newEmail).then(async() => {
+
+        const id = await getIdByUser(auth.currentUser.displayName);
+
+        console.log(id);
+        const userRef = doc(db, "users", id);
+        const userData = {
+            email: newEmail
+        };
+        await updateDoc(userRef, userData);
+
+        return { sucess: true , msg: "Email alterado com sucesso"};
+    }).catch((error) => {
+
+        switch (error.code) {
+            case 'auth/invalid-email':
+                return { sucess: false, msg: 'E-mail inválido!', type: 'error' };
+            default:
+                return { sucess: false, msg: `Erro ao alterar e-mail. Contate um administrador (${error.code})`, type: 'error' };
+        }
+    })
+
+
 }
 
-export const removeAdmin = async (user) => {
-    auth.setCustomUserClaims(user.uid, { admin: false });
+export const changeSenha = async () => {
+    return sendPasswordResetEmail(auth, auth.currentUser.email)
+  .then(() => {
+    return { sucess: true, msg: 'Um e-mail de redefinição de senha foi enviado. Verifique sua caixa de entrada e spam.' };
+  })
+  .catch((error) => {
+    return { sucess: false, msg: `Ocorreu um erro! Contate um administrador. (${error.code})` }
+    // ..
+  });
 }
 
 export const exit = async () => {

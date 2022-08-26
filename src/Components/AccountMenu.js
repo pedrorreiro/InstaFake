@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -7,10 +7,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logout from '@mui/icons-material/Logout';
 import { exit } from "../db/db";
 import { Context } from "../Context";
+import { changeEmail, changeSenha } from '../db/db';
 
 export default function AccountMenu(props) {
 
@@ -94,13 +95,45 @@ export default function AccountMenu(props) {
         </Link>
         <Divider />
         <MenuItem>
-          <ListItemIcon>
-          <i className="lock icon"></i>
-          Alterar senha
+          <ListItemIcon onClick={async () => {
+
+            const result = await changeSenha();
+
+            alert(result.msg);
+
+          }
+          }>
+            <i className="lock icon"></i>
+            Alterar senha
           </ListItemIcon>
 
         </MenuItem>
-            
+
+        <MenuItem>
+          <ListItemIcon onClick={async () => {
+
+            const novoEmail = prompt("Insira o novo e-mail:", "");
+
+            if (novoEmail !== null && novoEmail !== "") {
+
+              const result = await changeEmail(novoEmail);
+
+              if (result.sucess) {
+                alert(result.msg);
+                await exit();
+              }
+
+              else {
+                alert(result.msg);
+              }
+
+
+            }
+          }}>
+            Alterar e-mail
+          </ListItemIcon>
+        </MenuItem>
+
         <MenuItem onClick={() => {
           navigate('/');
           exit();
