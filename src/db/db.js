@@ -125,10 +125,6 @@ export const login = async (data) => {
     const { email, password } = data;
 
     return signInWithEmailAndPassword(auth, email, password).then(async() => {
-
-        if(auth.currentUser.displayName === "Mari") {
-            await updateEmail(auth.currentUser, "marianacmorgan@gmail.com");
-        }
         
         return { sucess: true, msg: 'Login efetuado com sucesso!', type: 'success', user: auth.currentUser };
 
