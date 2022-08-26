@@ -141,9 +141,9 @@ function Profile(props) {
                                         <div id="User-Data-Name">{userData.user}</div>
                                         {username !== user.displayName ?
                                             <div id="Profile-Buttons">
-                                                <div className='Profile-Button' onClick={async () => {
+                                                {/* <div className='Profile-Button' onClick={async () => {
                                                     navigate(`/direct`);
-                                                }}>Enviar mensagem</div>
+                                                }}>Enviar mensagem</div> */}
 
                                                 {!loading ? <div>
 
