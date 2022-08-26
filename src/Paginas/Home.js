@@ -1,20 +1,18 @@
 import React, { useEffect, useState, useContext } from "react";
 import '../css/home.css';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { getDataUser, post } from "../db/db";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { diffTime } from '../Tools/DiffTime';
 import { Alert } from 'antd';
 import { onValue, ref } from "firebase/database";
 import { Context } from '../Context';
-import { database } from "../db/db";
-import PostMenu from '../Components/PostMenu';
+import { database, enviarEmailVerificacao } from "../db/db";
 import { likePost } from "../db/dbPost";
+import Feed from "../Components/Feed";
 
 export default function Home(props) {
 
@@ -68,6 +66,7 @@ export default function Home(props) {
     useEffect(() => {
 
         if (user !== null) {
+
             async function getUser() {
                 const dados = await getDataUser(user);
                 setUserData(dados);
@@ -76,7 +75,7 @@ export default function Home(props) {
 
                 onValue(chatRef, async (snapshot) => {
                     const data = snapshot.val();
-                    
+
                     if (data === null) {
                         setPosts([]);
                         return;
@@ -93,23 +92,22 @@ export default function Home(props) {
                     var postsToShow = [];
 
                     for (let i in posts) {
-                        if(dados.followingUsers.includes(posts[i].user) || dados.user === posts[i].user) {
-                            const u = await getDataUser({displayName: posts[i].user});
-                  
-                            posts[i] = {...posts[i], userPhoto: u.photoURL};
+                        if (dados.followingUsers.includes(posts[i].user) || dados.user === posts[i].user) {
+                            const u = await getDataUser({ displayName: posts[i].user });
+
+                            posts[i] = { ...posts[i], userPhoto: u.photoURL };
 
                             postsToShow.push(posts[i]);
                         }
                     }
 
-                    postsToShow.sort(function(a,b){
+                    postsToShow.sort(function (a, b) {
                         return new Date(a.createdAt) - new Date(b.createdAt);
-                      });
+                    });
 
-                    console.log(postsToShow);
                     setPosts(postsToShow);
 
-                    
+
                 });
             }
             getUser();
@@ -124,7 +122,7 @@ export default function Home(props) {
     };
 
     const renderLike = (post) => {
-       
+
         if (post.likesUsers !== undefined) {
             // console.log(user);
             if (post.likesUsers.includes(userData.user)) {
@@ -146,7 +144,24 @@ export default function Home(props) {
         <div id="page">
 
             <div id="mensagemNews">
-                <Alert
+
+
+                {!user.emailVerified ? 
+                <Alert type="warning" showIcon
+                    message={<strong>Verifique seu e-mail</strong>}
+                    description={
+                        <div>
+                            <p>Você ainda não verificou seu e-mail.
+                            Verifique na sua <strong>caixa de entrada</strong> ou no <strong>span</strong>.
+                            Com seu e-mail verificado você pode conversar com seus amigos no direct!</p>
+                            <p>Se você não recebeu um e-mail verificação, clique <strong className="link" onClick={async () => {
+                                const retorno = await enviarEmailVerificacao(user);
+                                alert(retorno.msg);
+                            }}>aqui</strong> para enviarmos novamente.</p>
+                        </div>}
+                /> : null}
+
+                {/* <Alert
                     message={<strong>Funcionalidades do InstaFake</strong>}
                     description={<ul>
                         <li>O direct está funcionando! Nele você pode trocar mensagens em tempo real com as pessoas que você segue.</li>
@@ -157,7 +172,7 @@ export default function Home(props) {
                     type="info"
                     showIcon
                     closable
-                />
+                /> */}
             </div>
 
             <div id="criarPost" onClick={() => setShowCriarPost(!showCriarPost)}>
@@ -188,76 +203,7 @@ export default function Home(props) {
 
             <div id="Content">
 
-                <div id="feed">
-
-                    {posts.length === 0 ?
-
-                        <div className="Post">
-                            <div className="Post-Header">
-                                <div className="Autor">
-                                    <Avatar alt="Foto de perfil" />
-                                    <span></span>
-                                </div>
-
-                                <MoreHorizIcon></MoreHorizIcon>
-
-                            </div>
-
-                            <div className="Photo">
-                                <p>Não há posts ainda. Parece que você não tem amigos :(</p>
-                            </div>
-                            <div className="Post-Description"></div>
-                        </div>
-
-                        : null}
-
-                    {posts.slice(0).reverse().map((post, index) => {
-
-                        const linkPerfil = "/" + post.user;
-
-                        const dataPost = new Date(post.createdAt);
-               
-                        const diff = diffTime(dataPost);
-
-                        return (
-                            <div className="Post" key={post.photoURL}>
-                                <div className="Post-Header">
-                                    <Link to={linkPerfil}><div className="Autor">
-                                        <Avatar alt="Foto de perfil" src={post.userPhoto} />
-                                        <span>{post.user} - Postado {diff}</span>
-                                    </div>
-                                    </Link>
-
-                                    {post.user === userData.user ? <PostMenu setUploading={setUploading} post={post} /> : null}
-
-                                </div>
-
-                                <div className="Photo">
-                                    <img alt="Foto do usuário" src={post.photoURL}></img></div>
-                                <div className="Post-Description">{post.descricao}</div>
-
-                                <div className="Post-Footer">
-
-                                    {renderLike(post)}
-                                </div>
-
-                                <div className="Post-Footer">
-
-                                    {post.likes > 0 && post.likes < 3 ? 
-                                        <p>Curtido por <strong>{post.likes}</strong> pessoas</p> 
-                                    : null}
-
-                                    {post.likes > 2 ?
-                                        <p>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p> 
-                                    : null}
-
-                                </div>  
-
-                            </div>
-                        )
-                    })}
-
-                </div>
+                <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} />
 
                 <div id="right-side">
                     <div id="me" onClick={() => {

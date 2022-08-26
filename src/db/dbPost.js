@@ -61,13 +61,13 @@ export const getPostById = async (id, user) => {
 
 export const likePost = async (p, user) => {
     var post = await getPostById(p.id, p.user);
-    console.log(post);
+    // console.log(post);
     const username = post.user;
     const me = user.displayName;
     const postKey = p.id;
     // const userKey = user.id;
-    console.log(me);
-    console.log(post);
+    // console.log(me);
+    // console.log(post);
     var updates = {};
 
     if (post.likesUsers === undefined) {
@@ -75,17 +75,17 @@ export const likePost = async (p, user) => {
         post.likesUsers = [];
         post.likesUsers.push(me);
         post.likes++;
-        console.log("deu like (tava vazio)");
+        // console.log("deu like (tava vazio)");
     }
 
     else if (post.likesUsers.includes(me)) {
         post.likesUsers = post.likesUsers.filter(user => user !== me);
         post.likes--;
-        console.log("deu deslike");
+        // console.log("deu deslike");
     } else {
         post.likesUsers.push(me);
         post.likes++;
-        console.log("deu like");
+        // console.log("deu like");
     }
 
     // push(child(ref(database), "posts/" + p.user + "/likesUsers"));

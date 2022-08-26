@@ -17,6 +17,7 @@ import { Context } from "./Context";
 import { auth } from "./db/db";
 import Login from "./Paginas/Login";
 import Home from "./Paginas/Home";
+import PrivateDirect from "./Paginas/PrivateDirect";
 
 function App() {
 
@@ -63,7 +64,12 @@ function App() {
 
             <Route path="/signup" element={<SignUp />} />
             <Route path='/:username' element={<Profile />} />
-            <Route path='/direct' element={<Direct userData={userData} />} />
+            <Route path='/direct' element={
+              <PrivateDirect>
+                <Direct userData={userData} />
+              </PrivateDirect>
+            
+          } />
 
           </Routes>
 

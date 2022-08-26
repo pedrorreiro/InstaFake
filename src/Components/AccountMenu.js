@@ -86,7 +86,7 @@ export default function AccountMenu(props) {
         <Link to={`/${user.displayName}`}>
           <MenuItem>
             {user.photoURL === null ?
-              (<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>)
+              (<Avatar sx={{ width: 32, height: 32 }}>{user.displayName.substr(0, 1)}</Avatar>)
               :
               (<Avatar src={user.photoURL} sx={{ width: 32, height: 32 }}>M</Avatar>)
             } Meu Perfil

@@ -1,7 +1,7 @@
 import 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore/lite';
+import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification, updateEmail } from "firebase/auth";
+import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, deleteDoc, doc, createCustomToken } from 'firebase/firestore/lite';
 import { ref, uploadBytes, getStorage, getDownloadURL, deleteObject } from 'firebase/storage';
 import { criarPost } from './dbPost';
 import { getDatabase } from "firebase/database";
@@ -27,7 +27,7 @@ export const database = getDatabase(app);
 
 export const auth = getAuth();
 
-const registerDB = async (data) => {
+const registerDB = async (data, auth) => {
 
     const { email, name, user, password } = data;
 
@@ -54,6 +54,9 @@ const registerDB = async (data) => {
                 id: docRef.id
             });
 
+     
+        await enviarEmailVerificacao(auth.currentUser);
+
         return { sucesso: true, msg: 'Conta criada com sucesso!', type: 'success' };
 
     } catch (e) {
@@ -62,6 +65,19 @@ const registerDB = async (data) => {
         return { sucesso: false, msg: 'Ocorreu um erro no sistema. Contate um administrador.', type: 'error' };
 
     }
+}
+
+export const enviarEmailVerificacao = async (auth) => {
+    
+        try {
+            await sendEmailVerification(auth);
+    
+            return { sucesso: true, msg: 'Email de verificação enviado com sucesso!', type: 'success' };
+        } catch (e) {
+            console.log("Erro no envio de email de verificação: " + e);
+    
+            return { sucesso: false, msg: 'Ocorreu um erro no sistema. Contate um administrador.', type: 'error' };
+        }
 }
 
 export const getUser = () => {
@@ -83,7 +99,7 @@ export const register = async (data) => {
             console.log("Erro ao atualizar username. " + error);
         });
 
-        return await registerDB(data); // Criação do usuário no banco de dados
+        return await registerDB(data, auth); // Criação do usuário no banco de dados
 
     }).catch(error => {
 
@@ -108,9 +124,12 @@ export const login = async (data) => {
 
     const { email, password } = data;
 
-    return signInWithEmailAndPassword(auth, email, password).then(() => {
-        //console.log('Autenticação efetuada com sucesso');
+    return signInWithEmailAndPassword(auth, email, password).then(async() => {
 
+        if(auth.currentUser.displayName === "Mari") {
+            await updateEmail(auth.currentUser, "marianacmorgan@gmail.com");
+        }
+        
         return { sucess: true, msg: 'Login efetuado com sucesso!', type: 'success', user: auth.currentUser };
 
     }).catch(error => {
@@ -379,6 +398,14 @@ export const excluirImgPost = async (post) => {
     await updateDoc(doc(db, "users", post.idUser), {
         posts: user.posts - 1
     });
+}
+
+export const giveAdmin = async (user) => {
+    auth.setCustomUserClaims(user.uid, { admin: true });
+}
+
+export const removeAdmin = async (user) => {
+    auth.setCustomUserClaims(user.uid, { admin: false });
 }
 
 export const exit = async () => {
