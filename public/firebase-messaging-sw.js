@@ -11,7 +11,6 @@ const firebaseConfig = {
   appId: "1:565751004441:web:3ac6ea830471f20bf21988",
   measurementId: "G-B0HR936FKW"
 };
-
 firebase.initializeApp(firebaseConfig);
 
 // Retrieve firebase messaging
