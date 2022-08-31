@@ -81,7 +81,7 @@ Pode sim, você consegue colocar uma foto e uma descrição.
 
 #### Consigo seguir meus amigos pra ver o que eles estão postando?
 
-Consegue sim!
+Consegue sim! Você também pode curtir as publicações dos seus amigos.
 
 #### Eu posso conversar com meus amigos pelo Direct?
 
