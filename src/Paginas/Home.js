@@ -76,40 +76,43 @@ export default function Home(props) {
 
                 onValue(chatRef, async (snapshot) => {
 
-                    const data = snapshot.val();
+                    const allPosts = snapshot.val();
 
-                    if (data === null) {
+                    if (allPosts === null) {
                         setPosts([]);
                         return;
                     }
 
                     var posts = [];
 
-                    for (let i in data) {
-                        for (let j in data[i]) {
-                            posts.push(data[i][j]);
+                    for (let i in allPosts) {
+                        for (let j in allPosts[i]) {
+                            posts.push(allPosts[i][j]);
                         }
                     }
-
                     var postsToShow = [];
 
                     for (let i in posts) {
-                        // if (dados.followingUsers.includes(posts[i].user) || dados.user === posts[i].user) {
-                        //     const u = await getDataUser({ displayName: posts[i].user });
+        
+                        if(posts[i].user === dados.user){
+                            posts[i] = { ...posts[i], userPhoto: dados.photoURL };
+                            postsToShow.push(posts[i]);
 
-                        //     posts[i] = { ...posts[i], userPhoto: u.photoURL };
+                        }
 
-                        //     postsToShow.push(posts[i]);
-                        // }
+                        else{
+                            dados.followingUsersData.forEach(u => {
+                             
+                                if (posts[i].user === u.user) {
+              
+                                    posts[i] = { ...posts[i], userPhoto: u.photoURL };
+    
+                                    postsToShow.push(posts[i]);
+                                }
+                            })
+                        }
 
-                        dados.followingUsersData.forEach(user => {
-                            if (user.user === posts[i].user) {
-          
-                                posts[i] = { ...posts[i], userPhoto: user.photoURL };
-
-                                postsToShow.push(posts[i]);
-                            }
-                        })
+                        
                     }
 
                     postsToShow.sort(function (a, b) {

@@ -22,7 +22,6 @@ export default function Feed(props) {
 
                     <CircularProgress />
 
-
                 </div>
 
                 : null
