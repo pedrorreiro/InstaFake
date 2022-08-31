@@ -18,11 +18,11 @@ export default function Feed(props) {
         <div id="feed">
             {posts.length === 0 ?
 
-                <div className="Post" style={{textAlign: "center"}}>
-                    
+                <div className="Post" style={{ textAlign: "center" }}>
+
                     <CircularProgress />
-                                
-             
+
+
                 </div>
 
                 : null
@@ -41,7 +41,7 @@ export default function Feed(props) {
                         <div className="Post-Header">
                             <Link to={linkPerfil}><div className="Autor">
                                 <Avatar alt="Foto de perfil" src={post.userPhoto} />
-                                <span>{post.user} - Postado {diff}</span>
+                                <span>{post.user}</span>
                             </div>
                             </Link>
                             {/* {post.user === "pedrorreiro" ? <Chip label="Administrador"className="adm" sx={{ background: "#ed4956", color: "white" }}/> : null} */}
@@ -67,6 +67,8 @@ export default function Feed(props) {
                             {post.likes > 2 ?
                                 <p>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p>
                                 : null}
+
+                            <p className="dataPostada">{diff.toLocaleUpperCase()}</p>
 
                         </div>
 

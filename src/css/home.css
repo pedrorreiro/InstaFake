@@ -33,8 +33,12 @@ header {
 
 #right-side {
     display: flex;
+    flex: 4;
     flex-direction: column;
     width: 100%;
+    margin-left: 25px;
+    vertical-align: top;
+    margin-bottom: 50px;
 }
 
 #nav {
@@ -45,17 +49,12 @@ header {
 
 #me {
     display: inline-flex;
-    margin-left: 25px;
-    vertical-align: top;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 #post-area {
-    /* margin-left: 25px; */
     margin-bottom: 50px;
     text-align: center;
-    border: 1px solid #dbdbdb;
-    /* padding: 15px 15px; */
     border-radius: 7px;
     overflow: hidden;
     margin-top: 20px;
@@ -111,13 +110,15 @@ a {
 }
 
 #inputButton{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     font-weight: 500;
     font-size: .9em;
     color: #fff;
     border: none;
-    width: 100%;
     text-align: center;
-    margin-bottom: 10px;
+    padding: 10px 10px;
     background-color: #ff2828;
 }
 
@@ -251,11 +252,12 @@ header input::placeholder {
 #feed {
     display: inline-flex;
     flex-direction: column;
+    flex: 5;
 }
 
 .Post {
     box-sizing: border-box;
-    width: 400px;
+    width: 100%;
     border-radius: 5px;
     background-color: white;
     border: 1px #dbdbdb solid;
@@ -270,9 +272,14 @@ header input::placeholder {
 
 .Post-Footer{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 0px 10px;
     margin-top: 15px;
+}
+
+.dataPostada{
+    font-size: .7em;
+    color: #acabab;
 }
 
 .opcoesPost:hover{
@@ -385,6 +392,17 @@ label.Mui-focused{
         padding: 10px 1px;
     }
 
+    #criarPost{
+        width: 100%;
+    }
+
+    #right-side{
+        box-sizing: border-box;
+        padding: 10px;
+        display: block;
+        margin: 0;
+    }
+
     #mensagemNews{
         margin: 10px 10px;
     }
@@ -406,14 +424,6 @@ label.Mui-focused{
 
     .Insta-Box {
         width: 100%;
-    }
-
-    #Content-Profile {
-        width: 100% !important;
-    }
-
-    #me {
-        display: none;
     }
 
     #post-area {

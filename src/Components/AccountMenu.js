@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
+import { CircularProgress } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -11,13 +12,15 @@ import { Link, useNavigate } from "react-router-dom";
 import Logout from '@mui/icons-material/Logout';
 import { exit } from "../db/db";
 import { Context } from "../Context";
-import { changeEmail, changeSenha } from '../db/db';
+import { changeEmail, changeSenha, changeAvatar } from '../db/db';
 
 export default function AccountMenu(props) {
 
   const [user] = useContext(Context);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [uploading, setUploading] = useState(false);
+  const [mudandoSenha, setMudandoSenha] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,6 +30,16 @@ export default function AccountMenu(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const uploadImage = async (image) => {
+    console.log("Solicitando upload de imagem");
+    if (image == null) return;
+
+    await changeAvatar(image, user.displayName);
+
+    setUploading(false);
+
+  }
 
   return (
     <React.Fragment>
@@ -95,9 +108,38 @@ export default function AccountMenu(props) {
         </Link>
         <Divider />
         <MenuItem>
-          <ListItemIcon onClick={async () => {
+          <ListItemIcon onClick={(e) => {
+            e.stopPropagation();
+            
+          }}>
+            <div id='changeProfileImg'>
+              <label htmlFor="inputImg">Alterar imagem de perfil</label>
+              
+              <input id="inputImg" type={"file"} accept="image/png,image/jpeg" onChange={async (e) => {
+                e.stopPropagation();
+                setUploading(true);
+
+                await uploadImage(e.target.files[0]);
+
+                setUploading(false);
+
+                alert("Sucesso! Para ver a alteração, logue novamente.");
+
+              }} />
+            </div>
+
+            {uploading ? <CircularProgress style={{ marginLeft: 15, width: 30 }} /> : null}
+          </ListItemIcon>
+
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon onClick={async (e) => {
+            e.stopPropagation();
+            setMudandoSenha(true)
 
             const result = await changeSenha();
+
+            setMudandoSenha(false);
 
             alert(result.msg);
 
@@ -105,6 +147,7 @@ export default function AccountMenu(props) {
           }>
             <i className="lock icon"></i>
             Alterar senha
+            {mudandoSenha ? <CircularProgress style={{ marginLeft: 15, width: 20 }} /> : null}
           </ListItemIcon>
 
         </MenuItem>

@@ -95,3 +95,19 @@ export const likePost = async (p, user) => {
     await update(ref(database), updates);
 
 }
+
+export const getUserPosts = async (user) => {
+    return await get(ref(database, `posts/${user}`)).then(snapshot => {
+        const data = snapshot.val();
+        const posts = [];
+
+        for (let i in data) {
+            posts.push(data[i]);
+        }
+
+        return posts;
+
+    }).catch(error => {
+        console.log(error);
+    });
+}

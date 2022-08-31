@@ -142,7 +142,7 @@ export const login = async (data) => {
 }
 
 export const getDataUser = async (user) => {
-
+ 
     const usersRef = collection(db, "users");
 
     const q = query(usersRef, where('user', '==', user.displayName));
@@ -150,7 +150,27 @@ export const getDataUser = async (user) => {
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
-        return querySnapshot.docs[0].data();
+        const data = querySnapshot.docs[0].data();
+
+        const followersUsers = data.followersUsers;
+        const followingUsers = data.followingUsers;
+
+        const followersUsersData = await Promise.all(followersUsers.map(async (u) => {
+            const q = query(usersRef, where('user', '==', u));
+            const userData = await getDocs(q);
+            return userData.docs[0].data();
+        }));
+
+        const followingUsersData = await Promise.all(followingUsers.map(async (u) => {
+            const q = query(usersRef, where('user', '==', u));
+            const userData = await getDocs(q);
+            return userData.docs[0].data();
+        }));
+
+        data.followersUsersData = followersUsersData;
+        data.followingUsersData = followingUsersData;
+
+        return data;
     }
 
     else return null;
@@ -330,7 +350,6 @@ export const getFollowersPosts = async (user) => {
 
 export const getUserPosts = async (user) => {
 
-
     const usersRef = collection(db, "posts");
 
     const q = query(usersRef, where('user', '==', user));
@@ -340,11 +359,12 @@ export const getUserPosts = async (user) => {
     if (!result.empty) {
 
         var posts = [];
-
+        console.log(result);
         result.docs.forEach(doc => {
+            
             posts.push(doc.data());
         })
-
+        
         return posts;
     }
 
@@ -430,6 +450,9 @@ export const changeEmail = async (newEmail) => {
 }
 
 export const changeSenha = async () => {
+
+    console.log("Solicitação de alteração de senha...");
+
     return sendPasswordResetEmail(auth, auth.currentUser.email)
   .then(() => {
     return { sucess: true, msg: 'Um e-mail de redefinição de senha foi enviado. Verifique sua caixa de entrada e spam.' };

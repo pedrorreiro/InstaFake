@@ -8,7 +8,8 @@ import { getDataUser, post } from "../db/db";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Alert } from 'antd';
-import { limitToFirst, limitToLast, onValue, ref } from "firebase/database";
+import { onValue, ref } from "firebase/database";
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Context } from '../Context';
 import { database, enviarEmailVerificacao } from "../db/db";
 import { likePost } from "../db/dbPost";
@@ -43,7 +44,7 @@ export default function Home(props) {
 
         setUploading(true);
 
-        if (imageToPost == null || descricao == null) {
+        if (imageToPost == null) {
             alert("Selecione uma imagem para postar");
             setUploading(false);
             return;
@@ -74,7 +75,7 @@ export default function Home(props) {
                 const chatRef = ref(database, 'posts/');
 
                 onValue(chatRef, async (snapshot) => {
-                 
+
                     const data = snapshot.val();
 
                     if (data === null) {
@@ -93,13 +94,22 @@ export default function Home(props) {
                     var postsToShow = [];
 
                     for (let i in posts) {
-                        if (dados.followingUsers.includes(posts[i].user) || dados.user === posts[i].user) {
-                            const u = await getDataUser({ displayName: posts[i].user });
+                        // if (dados.followingUsers.includes(posts[i].user) || dados.user === posts[i].user) {
+                        //     const u = await getDataUser({ displayName: posts[i].user });
 
-                            posts[i] = { ...posts[i], userPhoto: u.photoURL };
+                        //     posts[i] = { ...posts[i], userPhoto: u.photoURL };
 
-                            postsToShow.push(posts[i]);
-                        }
+                        //     postsToShow.push(posts[i]);
+                        // }
+
+                        dados.followingUsersData.forEach(user => {
+                            if (user.user === posts[i].user) {
+          
+                                posts[i] = { ...posts[i], userPhoto: user.photoURL };
+
+                                postsToShow.push(posts[i]);
+                            }
+                        })
                     }
 
                     postsToShow.sort(function (a, b) {
@@ -147,20 +157,20 @@ export default function Home(props) {
             <div id="mensagemNews">
 
 
-                {!user.emailVerified ? 
-                <Alert type="warning" showIcon
-                    message={<strong>Verifique seu e-mail</strong>}
-                    description={
-                        <div>
-                            <p>Você ainda não verificou seu e-mail.
-                            Verifique na sua <strong>caixa de entrada</strong> ou no <strong>span</strong>.
-                            Com seu e-mail verificado você pode conversar com seus amigos no direct!</p>
-                            <p>Se você não recebeu um e-mail verificação, clique <strong className="link" onClick={async () => {
-                                const retorno = await enviarEmailVerificacao(user);
-                                alert(retorno.msg);
-                            }}>aqui</strong> para enviarmos novamente.</p>
-                        </div>}
-                /> : null}
+                {!user.emailVerified ?
+                    <Alert type="warning" showIcon
+                        message={<strong>Verifique seu e-mail</strong>}
+                        description={
+                            <div>
+                                <p>Você ainda não verificou seu e-mail.
+                                    Verifique na sua <strong>caixa de entrada</strong> ou no <strong>span</strong>.
+                                    Com seu e-mail verificado você pode conversar com seus amigos no direct!</p>
+                                <p>Se você não recebeu um e-mail verificação, clique <strong className="link" onClick={async () => {
+                                    const retorno = await enviarEmailVerificacao(user);
+                                    alert(retorno.msg);
+                                }}>aqui</strong> para enviarmos novamente.</p>
+                            </div>}
+                    /> : null}
 
                 {/* <Alert
                     message={<strong>Funcionalidades do InstaFake</strong>}
@@ -175,32 +185,6 @@ export default function Home(props) {
                     closable
                 /> */}
             </div>
-
-            <div id="criarPost" onClick={() => setShowCriarPost(!showCriarPost)}>
-                Criar Post
-            </div>
-
-            {showCriarPost ? <div id="post-area">
-                <label>Descrição</label>
-
-                <input type="textarea" className="textarea" onChange={(e => setDescricao(e.target.value))} />
-
-                <div id="inputButton" onClick={handleClick}>
-                    <span>Selecionar foto</span>
-                </div>
-
-                {imageToPost !== null ? <strong>{imageToPost.name}</strong> : null}
-
-                <input type="file" style={{ display: "none" }} accept="image/png,image/jpeg" ref={hiddenFileInput} onChange={async (e) => {
-
-                    await carregarImgPost(e.target.files[0]);
-
-                }} />
-
-                {!uploading ? <input type="submit" value="Publicar" onClick={async () => {
-                    await postar();
-                }} /> : <p style={{ marginTop: 20 }}>Carregando...</p>}
-            </div> : null}
 
             <div id="Content">
 
@@ -226,6 +210,38 @@ export default function Home(props) {
                         ) : null}
 
                     </div>
+
+                    <div id="criarPost" onClick={() => setShowCriarPost(!showCriarPost)}>
+                        Criar Post
+                    </div>
+
+                    {showCriarPost ? <div id="post-area">
+                        <label>Descrição</label>
+
+                        <form onSubmit= {async (e) => {
+                                e.preventDefault();
+                                await postar();
+                            }}>
+
+                            <input type="textarea" className="textarea" required onChange={(e => setDescricao(e.target.value))} />
+
+                            <div id="inputButton" onClick={handleClick}>
+                                <AddPhotoAlternateIcon />
+                                <span>Selecionar foto</span>
+                            </div>
+
+                            {imageToPost !== null ? <p>{imageToPost.name}</p> : null}
+
+                            <input type="file" style={{ display: "none" }} accept="image/png,image/jpeg" ref={hiddenFileInput} onChange={async (e) => {
+
+                                await carregarImgPost(e.target.files[0]);
+
+                            }} />
+
+                            {!uploading ? <input type="submit" value="Publicar"/> : <p style={{ marginTop: 20 }}>Carregando...</p>}
+
+                        </form>
+                    </div> : null}
 
                 </div>
 
