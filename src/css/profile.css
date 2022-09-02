@@ -161,6 +161,9 @@
 }
 
 #Lista-Pessoas-Tipo{
+    text-align: center;
+    padding-bottom: 10px;
+    font-weight: 500;
     border-bottom: 1px solid #dbdbdb;
     margin-bottom: 10px;
 }

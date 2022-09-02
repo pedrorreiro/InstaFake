@@ -14,6 +14,7 @@ import { Context } from '../Context';
 import { database, enviarEmailVerificacao } from "../db/db";
 import { likePost } from "../db/dbPost";
 import Feed from "../Components/Feed";
+import ListaPessoas from "../Components/ListaPessoas";
 
 export default function Home(props) {
 
@@ -26,8 +27,17 @@ export default function Home(props) {
     const [posts, setPosts] = useState([]);
     const [showCriarPost, setShowCriarPost] = useState(false);
     const [open, setOpen] = useState(false);
+    const [mostrandoDadosUserLike, setMostrandoDadosUserLike] = useState(false);
+    const [usersLike, setUsersLike] = useState([]);
 
     const navigate = useNavigate();
+
+    const mostrarUsersLike = (users) => {
+
+        setUsersLike(users);
+
+        setMostrandoDadosUserLike(true);
+    }
 
     const carregarImgPost = async (image) => {
         //console.log(image);
@@ -93,34 +103,56 @@ export default function Home(props) {
                     var postsToShow = [];
 
                     for (let i in posts) {
-        
-                        if(posts[i].user === dados.user){
+
+                        if (posts[i].user === dados.user) {
                             posts[i] = { ...posts[i], userPhoto: dados.photoURL };
                             postsToShow.push(posts[i]);
 
                         }
 
-                        else{
+                        else {
                             dados.followingUsersData.forEach(u => {
-                             
+
                                 if (posts[i].user === u.user) {
-              
+
                                     posts[i] = { ...posts[i], userPhoto: u.photoURL };
-    
+
                                     postsToShow.push(posts[i]);
                                 }
                             })
                         }
 
-                        
+
                     }
 
                     postsToShow.sort(function (a, b) {
                         return new Date(a.createdAt) - new Date(b.createdAt);
                     });
 
-                    setPosts(postsToShow);
+                    Promise.all(postsToShow.map(async (p) => {
 
+                        if (p.likesUsers !== undefined) {
+
+                            p.likesUsersData = await Promise.all(p.likesUsers.map(async (u) => {
+
+                                return await getDataUser({ displayName: u });
+                            }))
+    
+                            p = { ...p, likesUsersData: p.likesUsersData };
+                        }
+
+                        else{
+                           p.likesUsersData = [];
+                           p.likesUsers = [];
+                        }
+
+                        // console.log(p.likesUsers);
+
+                        return p;
+
+                    })).then((posts) => {
+                        setPosts(posts);
+                    });
 
                 });
             }
@@ -137,25 +169,31 @@ export default function Home(props) {
 
     const renderLike = (post) => {
 
-        if (post.likesUsers !== undefined) {
-            // console.log(user);
-            if (post.likesUsers.includes(userData.user)) {
-                return <FavoriteIcon sx={{ color: "#ed4956" }} onClick={async () => likePost(post, user)} key={post.id} />
-            }
+        var deiLike = false;
 
-            else {
-                return <FavoriteBorderIcon onClick={async () => likePost(post, user)} />
-            }
-
+        if(post.likesUsers.includes(user.displayName)){
+            deiLike = true;
         }
 
-        else {
-            return <FavoriteBorderIcon onClick={async () => likePost(post, user)} />
+        if(deiLike){
+            return <FavoriteIcon sx={{ color: "#ed4956" }} onClick={async () => likePost(post, userData)} key={post.id} />
+        }
+
+        else{
+            return <FavoriteBorderIcon onClick={async () => likePost(post, userData)} />
         }
     }
 
     return (
         <div id="page">
+
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={mostrandoDadosUserLike}
+                onClick={() => setMostrandoDadosUserLike(false)}
+            >
+                <ListaPessoas usuarios={usersLike} tipo={"Quem gostou da publicação"} />
+            </Backdrop>
 
             <div id="mensagemNews">
 
@@ -175,23 +213,11 @@ export default function Home(props) {
                             </div>}
                     /> : null}
 
-                {/* <Alert
-                    message={<strong>Funcionalidades do InstaFake</strong>}
-                    description={<ul>
-                        <li>O direct está funcionando! Nele você pode trocar mensagens em tempo real com as pessoas que você segue.</li>
-                        <li>Agora você pode fazer novos posts no menu da direita.</li>
-                        <li>Agora você pode ver as postagens dos seus amigos no feed.</li>
-                        <li><strong>Aviso:</strong> o feed não é atualizado em tempo real. Portanto, para ver as novas postagens, atualize a página.</li>
-                    </ul>}
-                    type="info"
-                    showIcon
-                    closable
-                /> */}
             </div>
 
             <div id="Content">
 
-                <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} />
+                <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} mostrarUsersLike={mostrarUsersLike} />
 
                 <div id="right-side">
                     <div id="me" onClick={() => {
@@ -221,10 +247,10 @@ export default function Home(props) {
                     {showCriarPost ? <div id="post-area">
                         <label>Descrição</label>
 
-                        <form onSubmit= {async (e) => {
-                                e.preventDefault();
-                                await postar();
-                            }}>
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            await postar();
+                        }}>
 
                             <input type="textarea" className="textarea" required onChange={(e => setDescricao(e.target.value))} />
 
@@ -241,7 +267,7 @@ export default function Home(props) {
 
                             }} />
 
-                            {!uploading ? <input type="submit" value="Publicar"/> : <p style={{ marginTop: 20 }}>Carregando...</p>}
+                            {!uploading ? <input type="submit" value="Publicar" /> : <p style={{ marginTop: 20 }}>Carregando...</p>}
 
                         </form>
                     </div> : null}

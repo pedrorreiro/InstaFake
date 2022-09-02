@@ -30,30 +30,6 @@ export const auth = getAuth();
 
 export const messaging = getMessaging(app);
 
-// const requestPermission = () => {
-//     console.log('Requesting permission...');
-//     Notification.requestPermission().then((permission) => {
-//       if (permission === 'granted') {
-//         console.log('Notification permission granted.');
-//         }
-//     });
-// }
-
-// requestPermission();
-
-// getToken(messaging, { vapidKey: 'BPFm33BBshb318AgnHGPV2hfcfCz7jr34GexMMqVeh0MjbwPX03AUtusS4DnQkmsDaLn1ncFKSm2ZmtUP3h22DE' }).then((currentToken) => {
-//     if (currentToken) {
-//       console.log(currentToken);
-//     } else {
-//       // Show permission request UI
-//       console.log('No registration token available. Request permission to generate one.');
-//       // ...
-//     }
-//   }).catch((err) => {
-//     console.log('An error occurred while retrieving token. ', err);
-//     // ...
-//   });
-
 const registerDB = async (data, auth) => {
 
     const { email, name, user, password } = data;
@@ -196,7 +172,7 @@ export const getDataUser = async (user) => {
 
         data.followersUsersData = followersUsersData;
         data.followingUsersData = followingUsersData;
-
+ 
         return data;
     }
 

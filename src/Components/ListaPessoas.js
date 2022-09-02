@@ -11,7 +11,7 @@ export default function ListaPessoas(props) {
         <div className="Lista-Pessoas">
 
             <div id="Lista-Pessoas-Tipo">
-                <p>{props.tipo}</p>
+                <span>{props.tipo}</span>
             </div>
             
 

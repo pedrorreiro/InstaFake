@@ -19,7 +19,6 @@ export const criarPost = async (post, downloadImage) => {
         photoURL: downloadImage,
         nomeImg: post.nomeImg,
         likes: 0,
-        likesUsers: [],
         comments: [],
         createdAt: new Date(),
         id: newPostKey
@@ -60,20 +59,17 @@ export const getPostById = async (id, user) => {
 }
 
 export const likePost = async (p, user) => {
+    
     var post = await getPostById(p.id, p.user);
-    // console.log(post);
+
     const username = post.user;
-    const me = user.displayName;
+    const me = user.user;
     const postKey = p.id;
-    // const userKey = user.id;
-    // console.log(me);
-    // console.log(post);
+
     var updates = {};
 
     if (post.likesUsers === undefined) {
-
-        post.likesUsers = [];
-        post.likesUsers.push(me);
+        post.likesUsers = [me];
         post.likes++;
         // console.log("deu like (tava vazio)");
     }

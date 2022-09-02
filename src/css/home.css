@@ -277,6 +277,10 @@ header input::placeholder {
     margin-top: 15px;
 }
 
+.infoLikePost:hover{
+    cursor: pointer;
+}
+
 .dataPostada{
     font-size: .7em;
     color: #acabab;
