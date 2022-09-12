@@ -7,12 +7,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDataUser, post } from "../db/db";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Alert } from 'antd';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import { onValue, ref } from "firebase/database";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Context } from '../Context';
 import { database, enviarEmailVerificacao } from "../db/db";
-import { likePost } from "../db/dbPost";
+import { likePost, newComment, deleteComment } from "../db/dbPost";
 import Feed from "../Components/Feed";
 import ListaPessoas from "../Components/ListaPessoas";
 
@@ -79,8 +80,12 @@ export default function Home(props) {
         if (user !== null) {
 
             async function getUser() {
+
                 const dados = await getDataUser(user);
+
                 setUserData(dados);
+
+                var usersData = [];
 
                 const chatRef = ref(database, 'posts/');
 
@@ -94,13 +99,15 @@ export default function Home(props) {
                     }
 
                     var posts = [];
+                    var postsToShow = [];
 
                     for (let i in allPosts) {
                         for (let j in allPosts[i]) {
-                            posts.push(allPosts[i][j]);
+                            const p = allPosts[i][j];
+                            posts.push(p);
                         }
                     }
-                    var postsToShow = [];
+                    
 
                     for (let i in posts) {
 
@@ -129,30 +136,8 @@ export default function Home(props) {
                         return new Date(a.createdAt) - new Date(b.createdAt);
                     });
 
-                    Promise.all(postsToShow.map(async (p) => {
-
-                        if (p.likesUsers !== undefined) {
-
-                            p.likesUsersData = await Promise.all(p.likesUsers.map(async (u) => {
-
-                                return await getDataUser({ displayName: u });
-                            }))
-    
-                            p = { ...p, likesUsersData: p.likesUsersData };
-                        }
-
-                        else{
-                           p.likesUsersData = [];
-                           p.likesUsers = [];
-                        }
-
-                        // console.log(p.likesUsers);
-
-                        return p;
-
-                    })).then((posts) => {
-                        setPosts(posts);
-                    });
+                    setPosts(posts);
+               
 
                 });
             }
@@ -171,17 +156,43 @@ export default function Home(props) {
 
         var deiLike = false;
 
-        if(post.likesUsers.includes(user.displayName)){
+        if (post.likesUsers?.includes(user.displayName)) {
             deiLike = true;
         }
 
-        if(deiLike){
-            return <FavoriteIcon sx={{ color: "#ed4956" }} onClick={async () => likePost(post, userData)} key={post.id} />
+        if (deiLike) {
+            return <FavoriteIcon className="likeIcon" sx={{ color: "#ed4956" }} onClick={async () => likePost(post, userData)} key={post.id} />
         }
 
-        else{
-            return <FavoriteBorderIcon onClick={async () => likePost(post, userData)} />
+        else {
+            return <FavoriteBorderIcon className="likeIcon" onClick={async () => likePost(post, userData)} />
         }
+    }
+
+    const addComment = async (post, comment) => {
+
+        comment = {
+            user: userData.user,
+            userPhoto: userData.photoURL,
+            msg: comment
+        }
+
+        // console.log(comment.user);
+        // console.log(comment.userPhoto);
+        // console.log(comment.msg);
+
+        // console.log(post.user);
+        // console.log(post.id);
+
+        await newComment(post, comment);
+    }
+
+    const deletComment = async (post, comment) => {
+
+        await deleteComment(post, comment);
+
+        console.log(post);
+        console.log(comment);
     }
 
     return (
@@ -199,25 +210,25 @@ export default function Home(props) {
 
 
                 {!user.emailVerified ?
-                    <Alert type="warning" showIcon
-                        message={<strong>Verifique seu e-mail</strong>}
-                        description={
-                            <div>
-                                <p>Você ainda não verificou seu e-mail.
-                                    Verifique na sua <strong>caixa de entrada</strong> ou no <strong>span</strong>.
-                                    Com seu e-mail verificado você pode conversar com seus amigos no direct!</p>
-                                <p>Se você não recebeu um e-mail verificação, clique <strong className="link" onClick={async () => {
-                                    const retorno = await enviarEmailVerificacao(user);
-                                    alert(retorno.msg);
-                                }}>aqui</strong> para enviarmos novamente.</p>
-                            </div>}
-                    /> : null}
+                    <Alert severity="warning">
+                        <AlertTitle>Verifique seu e-mail</AlertTitle>
+
+                        <div>
+                            <p>Você ainda não verificou seu e-mail.
+                                Verifique na sua <strong>caixa de entrada</strong> ou no <strong>span</strong>.
+                                Com seu e-mail verificado você pode conversar com seus amigos no direct!</p>
+                            <p>Se você não recebeu um e-mail verificação, clique <strong className="link" onClick={async () => {
+                                const retorno = await enviarEmailVerificacao(user);
+                                alert(retorno.msg);
+                            }}>aqui</strong> para enviarmos novamente.</p>
+                        </div>
+                    </Alert> : null}
 
             </div>
 
             <div id="Content">
 
-                <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} mostrarUsersLike={mostrarUsersLike} />
+                <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} mostrarUsersLike={mostrarUsersLike} addComment={addComment} deleteComment={deletComment}/>
 
                 <div id="right-side">
                     <div id="me" onClick={() => {

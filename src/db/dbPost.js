@@ -14,6 +14,7 @@ export const criarPost = async (post, downloadImage) => {
 
     const postPronto = {
         user: username,
+        userPhoto: post.user.photoURL,
         idUser: post.user.id,
         descricao: post.descricao,
         photoURL: downloadImage,
@@ -59,7 +60,7 @@ export const getPostById = async (id, user) => {
 }
 
 export const likePost = async (p, user) => {
-    
+
     var post = await getPostById(p.id, p.user);
 
     const username = post.user;
@@ -68,19 +69,26 @@ export const likePost = async (p, user) => {
 
     var updates = {};
 
+    const userData = { user: me, photoURL: user.photoURL ?? "" };
+
     if (post.likesUsers === undefined) {
         post.likesUsers = [me];
         post.likes++;
-        // console.log("deu like (tava vazio)");
+
+        post.likesUsersData = [userData];
     }
 
     else if (post.likesUsers.includes(me)) {
         post.likesUsers = post.likesUsers.filter(user => user !== me);
         post.likes--;
-        // console.log("deu deslike");
+
+        if (post.likesUsersData) post.likesUsersData = post.likesUsersData.filter(u => u.user !== me);
+        console.log("deu deslike");
     } else {
         post.likesUsers.push(me);
         post.likes++;
+
+        if (post.likesUsersData) post.likesUsersData.push(userData);
         // console.log("deu like");
     }
 
@@ -106,4 +114,56 @@ export const getUserPosts = async (user) => {
     }).catch(error => {
         console.log(error);
     });
+}
+
+export const newComment = async (post, comment) => {
+
+    const username = post.user;
+    const postKey = post.id;
+
+    const commentKey = push(child(ref(database), `posts/${username}/${postKey}`)).key;
+
+    comment = {
+        id: commentKey,
+        user: comment.user,
+        msg: comment.msg,
+        photoURL: comment.userPhoto,
+        createdAt: new Date()
+    };
+
+    var updates = {};
+
+    var actualComments = [];
+
+    if (post.comments === undefined) {
+        post.comments = [comment];
+    } else {
+        for (let i in post.comments) {
+            actualComments.push(post.comments[i]);
+        }
+        actualComments.push(comment);
+
+        post.comments = actualComments;
+    }
+
+
+    updates[`posts/${username}/${postKey}/comments/${commentKey}`] = comment;
+
+    await update(ref(database), updates);
+}
+
+export const deleteComment = async (post, comment) => {
+    
+        const username = post.user;
+
+        var updates = {};
+    
+        updates[`posts/${username}/${post.id}/comments/${comment}`] = null;
+    
+        await update(ref(database), updates).then(() => {
+            console.log("Comentário excluído");
+        }).catch(error => {
+            console.log(error);
+        });
+
 }

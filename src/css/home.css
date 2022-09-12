@@ -277,6 +277,19 @@ header input::placeholder {
     margin-top: 15px;
 }
 
+.likeIcon:hover{
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.likeIcon:active{
+    scale: 1.0;
+}
+
+.Post-Description, .infoLikePost{
+    font-size: .9em;
+}
+
 .infoLikePost:hover{
     cursor: pointer;
 }
@@ -292,6 +305,83 @@ header input::placeholder {
 
 .heart:hover{
     cursor: pointer;
+}
+
+.commentContent{
+    display: flex;
+    align-items: center;
+}
+
+.comments{
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: inset 0px -3px 7px 0px rgba(0,0,0,0.1);
+}
+
+.comment{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .8em;
+}
+
+.comment > div{
+    margin-right: 10px;
+}
+
+.commentUser{
+    font-weight: 500;
+    margin: 0 10px;
+}
+
+.inputComment{
+    padding: 0 10px;
+    border-top: #efefef solid 1px;
+    padding-top: 10px;
+}
+
+.inputComment{
+    display: flex;
+}
+
+.postComment{
+    margin-top: 0 !important;
+    flex: 1 !important;
+}
+
+.postComment:hover{
+    cursor: pointer;
+}
+
+.inputText{
+    display: block;
+    width: 100%;
+    flex: 3;
+    border: none;
+    color: #2e2e2e;
+}
+
+.inputComment span{
+    font-size: .9em;
+    font-weight: 500;
+}
+
+.deleteComment:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.deleteComment:active{
+    transform: scale(1.0);
+}
+
+.inputText:focus{
+    outline: none;
+    background-color: white;
 }
 
 .avatarImgBusca{

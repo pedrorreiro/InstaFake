@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, sendEmailVerification, updateEmail, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, collection, query, where, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore/lite';
 import { ref, uploadBytes, getStorage, getDownloadURL, deleteObject } from 'firebase/storage';
-import { criarPost } from './dbPost';
+import { criarPost, whenUpdateProfile } from './dbPost';
 import { getDatabase } from "firebase/database";
 import { getMessaging, getToken } from "firebase/messaging";
 
@@ -85,7 +85,7 @@ export const enviarEmailVerificacao = async (auth) => {
 
 export const getUser = () => {
     return auth.currentUser;
-}
+} 
 
 export const register = async (data) => {
 
@@ -145,7 +145,7 @@ export const login = async (data) => {
 }
 
 export const getDataUser = async (user) => {
- 
+    console.log("dentro do getDataUser " + user.displayName);
     const usersRef = collection(db, "users");
 
     const q = query(usersRef, where('user', '==', user.displayName));
@@ -181,6 +181,8 @@ export const getDataUser = async (user) => {
 }
 
 export const getAllUsers = async () => {
+
+    console.log("getAllUsers");
 
     const usersRef = collection(db, "users");
 
@@ -240,11 +242,9 @@ export const changeAvatar = async (file, username) => {
                 photoURL: `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${username}%2F${username}?alt=media`
             });
 
-
     }).catch((e) => {
         console.log("Erro ao realizar upload: " + e);
     });
-
 }
 
 export const getProfileImage = async (username) => {
@@ -315,61 +315,6 @@ export const verifyFollow = async (user, following) => {
     const quemEuSigo = user.followingUsers;
 
     return (quemEuSigo.includes(following.user)); // retorna se eu sigo a pessoa ou não
-
-}
-
-export const getFollowersPosts = async (user) => {
-
-    const quemEuSigo = user.followingUsers;
-
-    quemEuSigo.push(user.user); // inserindo o perfil atual, para mostrar os próprios posts na timeline
-
-    if (quemEuSigo.length > 0) { // se eu sigo pelo menos 1 pessoa
-        const usersRef = collection(db, "posts");
-
-        const q = query(usersRef, where('user', 'in', quemEuSigo));
-
-        const result = await getDocs(q);
-
-        if (!result.empty) {
-
-            var posts = [];
-
-            result.docs.forEach(doc => {
-                posts.push(doc.data());
-            })
-
-            return posts;
-        }
-
-        else return [];
-
-
-    }
-
-    else return [];
-
-}
-
-export const getUserPosts = async (user) => {
-
-    const usersRef = collection(db, "posts");
-
-    const q = query(usersRef, where('user', '==', user));
-
-    const result = await getDocs(q);
-
-    if (!result.empty) {
-
-        var posts = [];
-        console.log(result);
-        result.docs.forEach(doc => {
-            
-            posts.push(doc.data());
-        })
-        
-        return posts;
-    }
 
 }
 

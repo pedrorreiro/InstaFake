@@ -4,7 +4,6 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import 'antd/dist/antd.css'
 import { useState, useEffect } from "react";
 import { getDataUser } from "./db/db";
 import PrivateRoute from "./Paginas/PrivateRoute";
