@@ -230,7 +230,7 @@ export default function Home(props) {
 
                 <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} mostrarUsersLike={mostrarUsersLike} addComment={addComment} deleteComment={deletComment}/>
 
-                <div id="right-side">
+                <div id="post-area">
                     <div id="me" onClick={() => {
 
                         if (userData !== null) {

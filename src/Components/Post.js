@@ -43,16 +43,19 @@ export const Post = (props) => {
 
                 elem.push(
                     <div className="comment" key={c.id}>
+
                         <div className="commentContent">
-                            <Avatar alt="Foto de perfil" sx={{ width: 32, height: 32 }} src={c.photoURL} />
-                            <p className="commentUser">{c.user}</p>
-                            <p className="commentText">{c.msg}</p>
+
+                            <Avatar alt="Foto de perfil" sx={{ width: 32, height: 32 }} className="avatarComment" src={c.photoURL} />
+
+                            <p className="commentText"><span className="commentUser">{c.user}</span>{c.msg}</p>
                         </div>
 
                         {c.user === userData.user || Admins.includes(user.email) ? <DeleteIcon className="deleteComment" sx={{ color: "#ba0413" }} onClick={() => {
                             props.deleteComment(post, c.id);
                         }
                         } /> : null}
+
                     </div>
                 )
             });

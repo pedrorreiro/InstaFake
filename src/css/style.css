@@ -3,11 +3,13 @@
   * {
     scrollbar-width: auto;
     scrollbar-color: #b3b3b3 #ffffff;
+    margin: 0;
+    padding: 0;
   }
 
   /* Chrome, Edge, and Safari */
   *::-webkit-scrollbar {
-    width: 11px;
+    width: 10px;
   }
 
   *::-webkit-scrollbar-track {
