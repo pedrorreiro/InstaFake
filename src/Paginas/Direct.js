@@ -8,8 +8,8 @@ import { useContext } from "react";
 
 export default function (props) {
 
-    const userData = props.userData;
-    const [user, setUser] = useContext(Context);
+    const [userData, setUserData] = useState(null);
+    const [user] = useContext(Context);
     const [seguindoDados, setSeguindoDados] = useState([]);
     const [userSelecionado, setUserSelecionado] = useState(null);
 
@@ -28,7 +28,6 @@ export default function (props) {
 
         // console.log(dadosSeguidores);
         setSeguindoDados(dadosSeguidores);
-        console.log(dadosSeguidores);
 
         if (dadosSeguidores !== null && dadosSeguidores.length > 0) {
             setUserSelecionado(dadosSeguidores[0]);
@@ -38,16 +37,22 @@ export default function (props) {
 
     useEffect(() => {
 
-        async function getFollowers() {
+        async function getFollowers(data) {
 
-            getFollowersData(userData);
+            getFollowersData(data);
         }
 
-        if (userData) {
-            getFollowers();
+        async function pegaDadosUser() {
+            console.log(user);
+            const dadosUser = await getDataUser(user);
+            setUserData(dadosUser);
+            getFollowers(dadosUser);
+    
         }
 
-    }, [userData]);
+        if(user) pegaDadosUser();
+
+    }, [user]);
 
     if (user !== null && !user.emailVerified) {
         return (<div id='erroVerificacao'>

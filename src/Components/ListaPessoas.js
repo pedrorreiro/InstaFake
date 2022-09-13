@@ -19,9 +19,9 @@ export default function ListaPessoas(props) {
                 {usuarios.map((usuario) => {
                     return (
 
-                        <div key={usuario.user} onClick={() => navigate(`/${usuario.user}`)} className="Lista-Pessoas-Item">
-                            <Avatar src={usuario.photoURL}></Avatar>
-                            <span>{usuario.user}</span>
+                        <div key={usuario} onClick={() => navigate(`/${usuario}`)} className="Lista-Pessoas-Item">
+                            <Avatar src={`https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${usuario}%2F${usuario}?alt=media`}></Avatar>
+                            <span>{usuario}</span>
                         </div>
 
 

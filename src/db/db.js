@@ -145,7 +145,7 @@ export const login = async (data) => {
 }
 
 export const getDataUser = async (user) => {
-    console.log("dentro do getDataUser " + user.displayName);
+    console.log("pegando user " + user.displayName);
     const usersRef = collection(db, "users");
 
     const q = query(usersRef, where('user', '==', user.displayName));
@@ -154,24 +154,6 @@ export const getDataUser = async (user) => {
 
     if (!querySnapshot.empty) {
         const data = querySnapshot.docs[0].data();
-
-        const followersUsers = data.followersUsers;
-        const followingUsers = data.followingUsers;
-
-        const followersUsersData = await Promise.all(followersUsers.map(async (u) => {
-            const q = query(usersRef, where('user', '==', u));
-            const userData = await getDocs(q);
-            return userData.docs[0].data();
-        }));
-
-        const followingUsersData = await Promise.all(followingUsers.map(async (u) => {
-            const q = query(usersRef, where('user', '==', u));
-            const userData = await getDocs(q);
-            return userData.docs[0].data();
-        }));
-
-        data.followersUsersData = followersUsersData;
-        data.followingUsersData = followingUsersData;
  
         return data;
     }

@@ -9,7 +9,7 @@ import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountMenu from "./AccountMenu";
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -26,18 +26,20 @@ export default function Header(props) {
     const [uploading, setUploading] = useState(false);
     const [allInstaUsers, setAllInstaUsers] = useState([]);
 
+    const navigate = useNavigate();
+
     const handleToggle = () => {
         setOpen(!open);
     };
 
-    useEffect(() => {
-  
-        if(user){
-            getAllInstaUsers();
-        }
-        
+    // useEffect(() => {
 
-    }, [open, user]);
+    //     if (user) {
+    //         getAllInstaUsers();
+    //     }
+
+
+    // }, [open, user]);
 
     async function getAllInstaUsers() {
         const users = await getAllUsers();
@@ -54,7 +56,20 @@ export default function Header(props) {
 
                 <div id="InputBusca">
                     <SearchIcon id="SearchIcon" />
-                    <Autocomplete
+
+                        <TextField
+                            label="Pesquisar"
+                            onChange={(e) => setBusca(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    navigate(`/${busca}`)
+                                }
+                            }}
+                            value={busca}
+
+                        />
+        
+                    {/* <Autocomplete
                         id="country-select-demo"
                         sx={{ width: 300 }}
                         options={allInstaUsers}
@@ -88,7 +103,7 @@ export default function Header(props) {
                             />
                         )}
 
-                    />
+                    /> */}
                 </div>
 
 

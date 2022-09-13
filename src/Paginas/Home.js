@@ -114,37 +114,34 @@ export default function Home(props) {
                         if (posts[i].user === dados.user) {
                             posts[i] = { ...posts[i], userPhoto: dados.photoURL };
                             postsToShow.push(posts[i]);
-
                         }
 
                         else {
-                            dados.followingUsersData.forEach(u => {
+                            dados.followingUsers.forEach(u => {
 
-                                if (posts[i].user === u.user) {
+                                if (posts[i].user === u) {
 
-                                    posts[i] = { ...posts[i], userPhoto: u.photoURL };
-
+                                    posts[i] = { ...posts[i], userPhoto: `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${u}%2F${u}?alt=media` };
                                     postsToShow.push(posts[i]);
                                 }
                             })
                         }
-
-
+ 
+                        
                     }
 
                     postsToShow.sort(function (a, b) {
                         return new Date(a.createdAt) - new Date(b.createdAt);
                     });
 
-                    setPosts(posts);
-               
+                    setPosts(postsToShow);      
 
                 });
             }
             getUser();
 
         }
-    }, [user]);
+    }, []);
 
     const hiddenFileInput = React.useRef(null);
 
@@ -177,13 +174,6 @@ export default function Home(props) {
             msg: comment
         }
 
-        // console.log(comment.user);
-        // console.log(comment.userPhoto);
-        // console.log(comment.msg);
-
-        // console.log(post.user);
-        // console.log(post.id);
-
         await newComment(post, comment);
     }
 
@@ -191,8 +181,8 @@ export default function Home(props) {
 
         await deleteComment(post, comment);
 
-        console.log(post);
-        console.log(comment);
+        // console.log(post);
+        // console.log(comment);
     }
 
     return (

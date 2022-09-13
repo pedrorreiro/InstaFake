@@ -89,11 +89,11 @@ export const Post = (props) => {
             <div className="Post-Footer">
 
                 {post.likes > 0 && post.likes < 3 ?
-                    <p className="infoLikePost" onClick={() => props.mostrarUsersLike(post.likesUsersData)}>Curtido por <strong>{post.likes}</strong> pessoas</p>
+                    <p className="infoLikePost" onClick={() => props.mostrarUsersLike(post.likesUsers)}>Curtido por <strong>{post.likes}</strong> pessoas</p>
                     : null}
 
                 {post.likes > 2 && post.likesUsers !== undefined ?
-                    <p className="infoLikePost" onClick={() => props.mostrarUsersLike(post.likesUsersData)}>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p>
+                    <p className="infoLikePost" onClick={() => props.mostrarUsersLike(post.likesUsers)}>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p>
                     : null}
 
                 <p className="dataPostada">{diff.toLocaleUpperCase()}</p>

@@ -11,7 +11,6 @@ import { Post } from "./Post";
 
 export default function Feed(props) {
 
-    const [user] = useContext(Context);
     const posts = props.posts;
     const userData = props.userData;
 

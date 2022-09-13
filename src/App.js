@@ -26,17 +26,6 @@ function App() {
   
     auth.onAuthStateChanged(user => {
       setUser(user);
-
-      async function pegaDadosUser() {
-        const dadosUser = await getDataUser(user);
-        setUserData(dadosUser);
-
-      }
-
-      if (user) {
-        pegaDadosUser();
-      }
-
     });
 
   }, []);
@@ -46,13 +35,13 @@ function App() {
       <Context.Provider value={[user, setUser]}>
         <Router>
 
-          {user !== null && userData !== null ? <Header userData={userData}></Header> : null}
+          {user !== null ? <Header></Header> : null}
 
           <Routes>
             <Route path="/"
               element={
                 <PrivateRoute>
-                  <Home userData={userData} />
+                  <Home/>
                 </PrivateRoute>}
             />   
 
@@ -63,7 +52,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path='/:username' element={<Profile />} />
             <Route path='/direct' element={
-                <Direct userData={userData} />
+                <Direct/>
             
           } />
 

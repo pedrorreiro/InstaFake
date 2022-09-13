@@ -19,7 +19,7 @@ function Profile(props) {
 
     const { username } = useParams();
 
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState(undefined);
     const [meusDadosCompletos, setMeusDadosCompletos] = useState(null);
     const [euSigo, setEuSigo] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -81,8 +81,6 @@ function Profile(props) {
 
     }, [username, user]);
 
-    // const msgDeslogado = "Você precisa estar logado para acessar o perfil.";
-
     if (user !== null && userData) {
         return (
             <div id="Content-Profile">
@@ -101,7 +99,7 @@ function Profile(props) {
                         open={mostrandoSeguidores}
                         onClick={() => setMostrandoSeguidores(false)}
                     >
-                        <ListaPessoas usuarios={userData.followersUsersData} tipo={"Seguidores"}/>
+                        <ListaPessoas usuarios={userData.followersUsers} tipo={"Seguidores"} />
                     </Backdrop>
 
                     <Backdrop
@@ -109,7 +107,7 @@ function Profile(props) {
                         open={mostrandoSeguindo}
                         onClick={() => setMostrandoSeguindo(false)}
                     >
-                        <ListaPessoas usuarios={userData.followingUsersData} tipo={"Seguindo"}/>
+                        <ListaPessoas usuarios={userData.followingUsers} tipo={"Seguindo"} />
                     </Backdrop>
 
 
@@ -192,7 +190,10 @@ function Profile(props) {
     else {
         return (
             <div className="carregando">
-                <CircularProgress />
+                {userData === undefined ? <CircularProgress /> : null}
+
+                {userData === null ? <div>Usuário não encontrado</div> : null}
+
             </div>
         )
     }
