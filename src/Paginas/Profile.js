@@ -5,11 +5,13 @@ import { getDataUser } from "../db/db.js";
 import Avatar from '@mui/material/Avatar';
 import Backdrop from '@mui/material/Backdrop';
 import { CircularProgress } from '@mui/material';
-import { follow, verifyFollow, unFollow, changeAvatar } from "../db/db";
+import { database, follow, verifyFollow, unFollow, changeAvatar } from "../db/db";
+import { onValue, ref } from "firebase/database";
 import { getUserPosts } from '../db/dbPost';
 import { Context } from '../Context';
 import { useNavigate } from 'react-router-dom';
 import ListaPessoas from '../Components/ListaPessoas';
+import { Post } from '../Components/Post';
 
 function Profile(props) {
 
@@ -24,12 +26,39 @@ function Profile(props) {
     const [euSigo, setEuSigo] = useState(false);
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
+    const [uploadingDeletePhoto, setUploadingDeletePhoto] = useState(false);
     const [mostrandoSeguindo, setMostrandoSeguindo] = useState(false);
     const [mostrandoSeguidores, setMostrandoSeguidores] = useState(false);
     const [posts, setPosts] = useState([]);
+    const [postSelecionado, setPostSelecionado] = useState(null);
+    const [mostrandoPostSelecionado, setMostrandoPostSelecionado] = useState(false);
+    const [postSelecionadoData, setPostSelecionadoData] = useState(null);
+
+    useEffect(() => {
+
+        if (postSelecionado != null) {
+            const chatRef = ref(database, `posts/${postSelecionado.user}/${postSelecionado.id}`);
+
+
+            onValue(chatRef, async (snapshot) => {
+
+                const p = snapshot.val();
+
+                setPostSelecionadoData(p);
+
+            });
+        }
+
+
+    }, [postSelecionado]);
+
+    useEffect(() => {
+        if (uploadingDeletePhoto) {
+            setMostrandoPostSelecionado(false);
+        }
+    },[uploadingDeletePhoto]);
 
     const uploadImage = async (image) => {
-        console.log(user);
         if (image == null) return;
 
         await changeAvatar(image, userData.user);
@@ -100,6 +129,22 @@ function Profile(props) {
                         onClick={() => setMostrandoSeguidores(false)}
                     >
                         <ListaPessoas usuarios={userData.followersUsers} tipo={"Seguidores"} />
+                    </Backdrop>
+
+                    {mostrandoPostSelecionado &&
+
+                        <div className="Backdrop-Post">
+                            {postSelecionadoData !== null && <Post id="postSelecionado" post={postSelecionadoData} userData={userData} setUploading={setUploadingDeletePhoto} />}
+                            {mostrandoPostSelecionado && <div className="Fundo-Preto" onClick={() => { setMostrandoPostSelecionado(null) }}></div>}
+                        </div>
+
+                    }
+
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={uploadingDeletePhoto}
+                    >
+                        <CircularProgress />
                     </Backdrop>
 
                     <Backdrop
@@ -175,7 +220,11 @@ function Profile(props) {
                         {posts.map((post) => {
                             return (
                                 <div className="Post-Profile" key={post.photoURL}>
-                                    <img src={post.photoURL}></img>
+                                    <img src={post.photoURL} onClick={() => {
+                                        setPostSelecionado(post);
+                                        setMostrandoPostSelecionado(true);
+
+                                    }}></img>
                                 </div>
                             )
                         })}

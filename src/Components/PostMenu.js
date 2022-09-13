@@ -21,7 +21,6 @@ export default function PostMenu(props) {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    // console.log(post);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -37,6 +36,7 @@ export default function PostMenu(props) {
         </Tooltip>
       </Box>
       <Menu
+        style={{zIndex: 99999999999}}
         anchorEl={anchorEl}
         id="account-menu"
         open={open}

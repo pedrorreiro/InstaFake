@@ -8,6 +8,9 @@ import { diffTime } from '../Tools/DiffTime';
 import { useState } from "react";
 import { useEffect } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Backdrop } from "@mui/material";
+import ListaPessoas from "./ListaPessoas";
+import {addComment, deletComment, renderLike} from '../services/Post';
 
 export const Post = (props) => {
 
@@ -16,7 +19,8 @@ export const Post = (props) => {
     const userData = props.userData;
     const [comment, setComment] = useState('');
     const [newComment, setNewComment] = useState(false);
-    const elementoComments = [];
+    const [usersLike, setUsersLike] = useState([]);
+    const [mostrandoDadosUserLike, setMostrandoDadosUserLike] = useState(false);
 
     const dataPost = new Date(post.createdAt);
 
@@ -24,7 +28,15 @@ export const Post = (props) => {
 
     const linkPerfil = "/" + post.user;
 
+    const mostrarUsersLike = (users) => {
+
+        setUsersLike(users);
+
+        setMostrandoDadosUserLike(true);
+    }
+
     useEffect(() => {
+
         const msgs = document.querySelectorAll(".comments");
 
         [].forEach.call(msgs, function (msgs) {
@@ -51,8 +63,8 @@ export const Post = (props) => {
                             <p className="commentText"><span className="commentUser">{c.user}</span>{c.msg}</p>
                         </div>
 
-                        {c.user === userData.user || Admins.includes(user.email) ? <DeleteIcon className="deleteComment" sx={{ color: "#ba0413" }} onClick={() => {
-                            props.deleteComment(post, c.id);
+                        {c.user === user.displayName || Admins.includes(user.email) ? <DeleteIcon className="deleteComment" sx={{ color: "#ba0413" }} onClick={() => {
+                            deletComment(post, c.id);
                         }
                         } /> : null}
 
@@ -67,6 +79,13 @@ export const Post = (props) => {
 
     return (
         <div className="Post">
+             <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={mostrandoDadosUserLike}
+                onClick={() => setMostrandoDadosUserLike(false)}
+            >
+                <ListaPessoas usuarios={usersLike} tipo={"Quem gostou da publicação"} />
+            </Backdrop>
             <div className="Post-Header">
                 <Link to={linkPerfil}><div className="Autor">
                     <Avatar alt="Foto de perfil" src={post.userPhoto} />
@@ -74,7 +93,7 @@ export const Post = (props) => {
                 </div>
                 </Link>
                 {/* {post.user === "pedrorreiro" ? <Chip label="Administrador"className="adm" sx={{ background: "#ed4956", color: "white" }}/> : null} */}
-                {post.user === userData.user || Admins.includes(user.email) ? <PostMenu setUploading={props.setUploading} post={post} /> : null}
+                {post.user === user.displayName || Admins.includes(user.email) ? <PostMenu className="PostMenu-Profile" setUploading={props.setUploading} post={post} /> : null}
 
             </div>
 
@@ -83,17 +102,17 @@ export const Post = (props) => {
             <div className="Post-Description">{post.descricao}</div>
 
             <div className="Post-Footer">
-                {props.renderLike(post)}
+                {renderLike(post, user, {user: user.displayName, photoURL : user.photoURL})}
             </div>
 
             <div className="Post-Footer">
 
                 {post.likes > 0 && post.likes < 3 ?
-                    <p className="infoLikePost" onClick={() => props.mostrarUsersLike(post.likesUsers)}>Curtido por <strong>{post.likes}</strong> pessoas</p>
+                    <p className="infoLikePost" onClick={() => mostrarUsersLike(post.likesUsers)}>Curtido por <strong>{post.likes}</strong> pessoas</p>
                     : null}
 
                 {post.likes > 2 && post.likesUsers !== undefined ?
-                    <p className="infoLikePost" onClick={() => props.mostrarUsersLike(post.likesUsers)}>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p>
+                    <p className="infoLikePost" onClick={() => mostrarUsersLike(post.likesUsers)}>Curtido por <strong>{post.likesUsers[0]}, {post.likesUsers[1]}</strong> e outras <strong>{post.likes - 2} pessoas</strong></p>
                     : null}
 
                 <p className="dataPostada">{diff.toLocaleUpperCase()}</p>
@@ -108,13 +127,10 @@ export const Post = (props) => {
 
                 </div>
 
-
-
-
                 <div >
                     <form className="inputComment" onSubmit={(e) => {
                         e.preventDefault();
-                        props.addComment(post, comment);
+                        addComment(post, comment, {user: user.displayName, photoURL : user.photoURL});
                         setComment('');
                         setNewComment(!newComment);
                     }}>

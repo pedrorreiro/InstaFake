@@ -36,7 +36,7 @@ export default function Feed(props) {
                 const diff = diffTime(dataPost);
 
                 return (
-                    <Post post={post} userData={userData} key={post.id} renderLike={props.renderLike} mostrarUsersLike={props.mostrarUsersLike} addComment={props.addComment} deleteComment={props.deleteComment}/>
+                    <Post post={post} userData={userData} key={post.id} setUploading={props.setUploading}/>
                 )
             })}
         </div>

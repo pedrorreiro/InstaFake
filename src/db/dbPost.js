@@ -12,6 +12,10 @@ export const criarPost = async (post, downloadImage) => {
 
     var updates = {};
 
+    if(post.user.photoURL === undefined || post.user.photoURL === null){
+        post.user.photoURL = "";
+    }
+
     const postPronto = {
         user: username,
         userPhoto: post.user.photoURL,

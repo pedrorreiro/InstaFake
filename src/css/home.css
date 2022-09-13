@@ -344,6 +344,7 @@ header input::placeholder {
 }
 
 .commentText{
+   color: black;
    max-width: 100%;
    margin-left: 10px;
 }
@@ -355,6 +356,7 @@ header input::placeholder {
 }
 
 .commentUser{
+    color: black;
     font-weight: 500;
     margin-right: 10px;
 }

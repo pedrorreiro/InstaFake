@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import '../css/home.css';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { getDataUser, post } from "../db/db";
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -13,9 +11,7 @@ import { onValue, ref } from "firebase/database";
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { Context } from '../Context';
 import { database, enviarEmailVerificacao } from "../db/db";
-import { likePost, newComment, deleteComment } from "../db/dbPost";
 import Feed from "../Components/Feed";
-import ListaPessoas from "../Components/ListaPessoas";
 
 export default function Home(props) {
 
@@ -149,52 +145,8 @@ export default function Home(props) {
         hiddenFileInput.current.click();
     };
 
-    const renderLike = (post) => {
-
-        var deiLike = false;
-
-        if (post.likesUsers?.includes(user.displayName)) {
-            deiLike = true;
-        }
-
-        if (deiLike) {
-            return <FavoriteIcon className="likeIcon" sx={{ color: "#ed4956" }} onClick={async () => likePost(post, userData)} key={post.id} />
-        }
-
-        else {
-            return <FavoriteBorderIcon className="likeIcon" onClick={async () => likePost(post, userData)} />
-        }
-    }
-
-    const addComment = async (post, comment) => {
-
-        comment = {
-            user: userData.user,
-            userPhoto: userData.photoURL,
-            msg: comment
-        }
-
-        await newComment(post, comment);
-    }
-
-    const deletComment = async (post, comment) => {
-
-        await deleteComment(post, comment);
-
-        // console.log(post);
-        // console.log(comment);
-    }
-
     return (
         <div id="page">
-
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={mostrandoDadosUserLike}
-                onClick={() => setMostrandoDadosUserLike(false)}
-            >
-                <ListaPessoas usuarios={usersLike} tipo={"Quem gostou da publicação"} />
-            </Backdrop>
 
             <div id="mensagemNews">
 
@@ -218,7 +170,7 @@ export default function Home(props) {
 
             <div id="Content">
 
-                <Feed posts={posts} userData={userData} setUploading={setUploading} renderLike={renderLike} mostrarUsersLike={mostrarUsersLike} addComment={addComment} deleteComment={deletComment}/>
+                <Feed posts={posts} userData={userData} setUploading={setUploading}/>
 
                 <div id="post-area">
                     <div id="me" onClick={() => {

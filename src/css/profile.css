@@ -1,3 +1,35 @@
+.Backdrop-Post{
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 99999999;
+}
+
+.Backdrop-Post > div:first-child{
+    text-align: left;
+    margin: auto;
+    width: 300px;
+    margin: auto;
+    z-index: 9999999;
+}
+
+.Fundo-Preto{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0 , .5);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+.PostMenu-Profile{
+    z-index: 99999999999;
+}
+
 #Content-Profile {
     text-align: center;
     padding: 40px 20%;
