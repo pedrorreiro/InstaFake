@@ -6,6 +6,11 @@
     top: 0;
     left: 0;
     z-index: 99999999;
+    overflow: scroll;
+}
+
+.Backdrop-Post img{
+    max-height: 300px !important;
 }
 
 .Backdrop-Post > div:first-child{
