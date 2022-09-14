@@ -53,8 +53,8 @@ export default function AccountMenu(props) {
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            {user.photoURL === null ?
-              (<Avatar sx={{ width: 32, height: 32 }}>{user.displayName.substr(0, 1)}</Avatar>)
+            {user?.photoURL === null? 
+              (<Avatar sx={{ width: 32, height: 32 }}>{user.displayName?.substr(0, 1)}</Avatar>)
               :
               (<Avatar src={user.photoURL} sx={{ width: 32, height: 32 }}></Avatar>)
             }
@@ -100,7 +100,7 @@ export default function AccountMenu(props) {
         <Link to={`/${user.displayName}`}>
           <MenuItem>
             {user.photoURL === null ?
-              (<Avatar sx={{ width: 32, height: 32 }}>{user.displayName.substr(0, 1)}</Avatar>)
+              (<Avatar sx={{ width: 32, height: 32 }}>{user.displayName?.substr(0, 1)}</Avatar>)
               :
               (<Avatar src={user.photoURL} sx={{ width: 32, height: 32 }}>M</Avatar>)
             } Meu Perfil

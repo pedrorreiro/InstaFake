@@ -93,7 +93,7 @@ export const register = async (data) => {
 
     return createUserWithEmailAndPassword(auth, email, password).then(async () => { // Autenticação do usuário
         //console.log('Autenticação efetuada com sucesso');
-
+        
         await updateProfile(auth.currentUser, {
             displayName: user
         }).then(function () {
