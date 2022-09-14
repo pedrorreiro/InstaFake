@@ -100,6 +100,8 @@ export const register = async (data) => {
 
     const querySnapshot = await getDocs(q);
 
+    console.log(querySnapshot.docs);
+
     if (querySnapshot.docs.length > 0) {
         return { sucess: false, msg: 'Nome de usuário já está sendo usado.', type: 'error' };
     }
