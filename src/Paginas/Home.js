@@ -103,7 +103,7 @@ export default function Home(props) {
                             posts.push(p);
                         }
                     }
-                    
+
 
                     for (let i in posts) {
 
@@ -122,15 +122,21 @@ export default function Home(props) {
                                 }
                             })
                         }
- 
-                        
+
+
                     }
 
                     postsToShow.sort(function (a, b) {
                         return new Date(a.createdAt) - new Date(b.createdAt);
                     });
 
-                    setPosts(postsToShow);      
+                    if (postsToShow.length > 0) {
+                        setPosts(postsToShow);
+                    }
+
+                    else {
+                        setPosts(null);
+                    }
 
                 });
             }
@@ -150,6 +156,12 @@ export default function Home(props) {
 
             <div id="mensagemNews">
 
+                <Alert severity="info">
+                    <AlertTitle>Novo aqui?</AlertTitle>
+                    <p>Na <strong>barra de pesquisa</strong> lá em cima, pesquise por "pedrorreiro" e me siga. Você vai conseguir visualizar, curtir e comentar as postagens tanto no meu perfil, quanto na sua timeline.</p>
+
+                </Alert>
+
 
                 {!user.emailVerified ?
                     <Alert severity="warning">
@@ -163,6 +175,7 @@ export default function Home(props) {
                                 const retorno = await enviarEmailVerificacao(user);
                                 alert(retorno.msg);
                             }}>aqui</strong> para enviarmos novamente.</p>
+
                         </div>
                     </Alert> : null}
 
@@ -170,7 +183,7 @@ export default function Home(props) {
 
             <div id="Content">
 
-                <Feed posts={posts} userData={userData} setUploading={setUploading}/>
+                <Feed posts={posts} userData={userData} setUploading={setUploading} />
 
                 <div id="post-area">
                     <div id="me" onClick={() => {

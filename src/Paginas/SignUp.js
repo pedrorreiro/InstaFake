@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { register } from "../db/db.js"
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
 
@@ -17,6 +18,8 @@ function SignUp() {
     const [camposPreenchidos, setCamposPreenchidos] = useState(false);
     const [error, setError] = useState(null);
     const [carregando, setCarregando] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -40,9 +43,8 @@ function SignUp() {
         const result = await register(data);
 
         if(result.sucess){
-            alert('Usuário criado com sucesso');
             setCarregando(false);
-            window.location.href = '/';
+            navigate('/');
         }
         
         else{

@@ -60,12 +60,12 @@ const registerDB = async (data, auth) => {
 
         await enviarEmailVerificacao(auth.currentUser);
 
-        return { sucesso: true, msg: 'Conta criada com sucesso!', type: 'success' };
+        return { sucess: true, msg: 'Conta criada com sucesso!', type: 'success' };
 
     } catch (e) {
         console.log("Erro no banco de dados: " + e);
 
-        return { sucesso: false, msg: 'Ocorreu um erro no sistema. Contate um administrador.', type: 'error' };
+        return { sucess: false, msg: 'Ocorreu um erro no sistema. Contate um administrador.', type: 'error' };
 
     }
 }

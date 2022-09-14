@@ -16,7 +16,7 @@ export default function Feed(props) {
 
     return (
         <div id="feed">
-            {posts.length === 0 ?
+            {posts?.length === 0 ?
 
                 <div className="Post" style={{ textAlign: "center" }}>
 
@@ -27,7 +27,13 @@ export default function Feed(props) {
                 : null
             }
 
-            {posts.slice(0).reverse().map((post, index) => {
+            {
+                posts === null ?
+                    <h4 style={{margin: "auto"}}>Não há nenhum post no momento.</h4>
+                    : null
+            }
+
+            {posts?.slice(0).reverse().map((post, index) => {
 
                 const linkPerfil = "/" + post.user;
 
