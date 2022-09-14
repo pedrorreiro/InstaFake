@@ -125,6 +125,8 @@ export const newComment = async (post, comment) => {
     const username = post.user;
     const postKey = post.id;
 
+    console.log("comentando, userPhotos: " + comment.userPhoto);
+
     const commentKey = push(child(ref(database), `posts/${username}/${postKey}`)).key;
 
     comment = {

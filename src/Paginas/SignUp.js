@@ -39,9 +39,9 @@ function SignUp() {
             name,
             user
         };
-
+  
         const result = await register(data);
-
+  
         if(result.sucess){
             setCarregando(false);
             navigate('/');
@@ -66,7 +66,7 @@ function SignUp() {
             })
     
         } else {
-            await newAccount();
+                await newAccount();   
         }
     }
 

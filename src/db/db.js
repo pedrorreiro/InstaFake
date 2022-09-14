@@ -45,6 +45,7 @@ const registerDB = async (data, auth) => {
             following: 0,
             followingUsers: [],
             followersUsers: [],
+            photoURL: `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${user}%2F${user}?alt=media`,
             bio: "Hey! I'm using Instagram!",
         });
 
@@ -91,11 +92,24 @@ export const register = async (data) => {
 
     const { email, password, user } = data;
 
+    // verifica se ja existe um user com esse nome no banco
+    
+    const usersRef = collection(db, "users");
+
+    const q = query(usersRef, where('user', '==', user));
+
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.docs.length > 0) {
+        return { sucess: false, msg: 'Nome de usuário já está sendo usado.', type: 'error' };
+    }
+
     return createUserWithEmailAndPassword(auth, email, password).then(async () => { // Autenticação do usuário
         //console.log('Autenticação efetuada com sucesso');
         
         await updateProfile(auth.currentUser, {
-            displayName: user
+            displayName: user,
+            photoURL: `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${user}%2F${user}?alt=media`,
         }).then(function () {
             //console.log("Username atualizado!");
         }, function (error) {
@@ -145,7 +159,7 @@ export const login = async (data) => {
 }
 
 export const getDataUser = async (user) => {
-    console.log("pegando user " + user.displayName);
+    // console.log("pegando user " + user.displayName);
     const usersRef = collection(db, "users");
 
     const q = query(usersRef, where('user', '==', user.displayName));
@@ -210,11 +224,6 @@ export const changeAvatar = async (file, username) => {
 
     return uploadBytes(imageRef, file).then(async () => {
         console.log("Upload realizado com sucesso");
-
-        await updateProfile(auth.currentUser, {
-            photoURL: `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${username}%2F${username}?alt=media`
-        })
-
         // Pegando o uid da coleção users
 
         const id = await getIdByUser(auth.currentUser.displayName);
