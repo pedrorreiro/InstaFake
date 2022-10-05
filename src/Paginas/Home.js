@@ -29,13 +29,6 @@ export default function Home(props) {
 
     const navigate = useNavigate();
 
-    const mostrarUsersLike = (users) => {
-
-        setUsersLike(users);
-
-        setMostrandoDadosUserLike(true);
-    }
-
     const carregarImgPost = async (image) => {
         //console.log(image);
         if (image == null) return;
@@ -86,8 +79,13 @@ export default function Home(props) {
                 const chatRef = ref(database, 'posts/');
 
                 onValue(chatRef, async (snapshot) => {
+                    
+                    console.log(snapshot.exportVal());
+                    
+                    console.log(snapshot.val());
 
                     const allPosts = snapshot.val();
+      
 
                     if (allPosts === null) {
                         setPosts([]);
@@ -164,7 +162,7 @@ export default function Home(props) {
 
 
                 {!user.emailVerified ?
-                    <Alert severity="warning">
+                    <Alert severity="warning" style={{marginTop: "20px"}}>
                         <AlertTitle>Verifique seu e-mail</AlertTitle>
 
                         <div>

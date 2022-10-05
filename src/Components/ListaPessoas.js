@@ -13,14 +13,17 @@ export default function ListaPessoas(props) {
             <div id="Lista-Pessoas-Tipo">
                 <span>{props.tipo}</span>
             </div>
-            
+
 
             <div id="Lista-Pessoas-Itens">
                 {usuarios.map((usuario) => {
+
+                    var link = `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${usuario}%2F${usuario}?alt=media`;
+
                     return (
 
                         <div key={usuario} onClick={() => navigate(`/${usuario}`)} className="Lista-Pessoas-Item">
-                            <Avatar src={`https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${usuario}%2F${usuario}?alt=media`}></Avatar>
+                            <Avatar src={link}/>
                             <span>{usuario}</span>
                         </div>
 

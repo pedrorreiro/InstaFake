@@ -1,4 +1,5 @@
 import '../css/style.css';
+import '../css/signup.css'
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import logo from '../img/login/logo.png';
@@ -26,7 +27,7 @@ function SignUp() {
         const verificaCampos = () => setCamposPreenchidos(email === '' || password === '' || confirmPassword === '' || name === '');
 
         verificaCampos();
-    } , [email, password, confirmPassword, name, user]);
+    }, [email, password, confirmPassword, name, user]);
 
     const newAccount = async () => {
 
@@ -39,15 +40,15 @@ function SignUp() {
             name,
             user
         };
-  
+
         const result = await register(data);
-  
-        if(result.sucess){
+
+        if (result.sucess) {
             setCarregando(false);
             navigate('/');
         }
-        
-        else{
+
+        else {
             setError({
                 msg: result.msg,
                 type: result.type
@@ -64,9 +65,9 @@ function SignUp() {
                 msg: 'As senhas não conferem',
                 type: 'warning'
             })
-    
+
         } else {
-                await newAccount();   
+            await newAccount();
         }
     }
 
@@ -105,9 +106,13 @@ function SignUp() {
                     <input type="password" placeholder='Senha' onChange={handlePassword} required></input>
                     <input type="password" placeholder='Confirmar senha' onChange={handleConfirmPassword} required></input>
 
-                    <p className='Info'>As pessoas que usam nosso serviço podem ter carregado suas informações de contato no Instagram. <span>Saiba mais</span></p>
+                    <div id='info'>
+                        <p className='Info'>Esse site <strong>não</strong> é a versão original do Instagram. Portanto nunca use a mesma senha que você usa normalmente.</p>
+                        
+                        <p className='Info'><span>Para usar o direct, usamos verificação de e-mail. Portanto use seu <strong>e-mail real</strong>.</span></p>
 
-                    <p className='Info'>Ao se cadastrar, você concorda com nossos <span>Termos, Política de Privacidade</span> e <span>Política de Cookies.</span></p>
+                        <p className='Info'><span>Não roubamos nenhuma informação sua.</span></p>
+                    </div>
 
                     {carregando ? <CircularProgress /> : <input style={camposPreenchidos ? DisableButton : null} type="submit" value={"Cadastre-se"}></input>}
 

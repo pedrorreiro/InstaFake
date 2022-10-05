@@ -111,7 +111,7 @@ export const register = async (data) => {
         
         await updateProfile(auth.currentUser, {
             displayName: user,
-            photoURL: `https://firebasestorage.googleapis.com/v0/b/projeto-instagram-93637.appspot.com/o/avatar%2F${user}%2F${user}?alt=media`,
+            photoURL: null,
         }).then(function () {
             //console.log("Username atualizado!");
         }, function (error) {

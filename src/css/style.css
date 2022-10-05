@@ -34,25 +34,9 @@ input{
     box-sizing: border-box;
 }
 
-.Info{
-    text-align: center;
-    padding: 0 5px;
-    font-size: .75em;
-    color: #a7a6a6;
-}
-
-.Info span{
-    font-weight: 500;
-}
-
 .Login, .SignUp{
     display: inline-block;
     text-align: center;
-}
-
-.SignUp{
-    width: 100%;
-    padding: 5vh 0;
 }
 
 .SignUp > div{
@@ -64,6 +48,8 @@ input{
 .Login{
     width: 100%;
     padding: 10vh 0;
+    display: flex;
+    justify-content: center;
 }
 
 .Box{
@@ -120,11 +106,6 @@ form input{
     padding: 10px 5px;
     font-size: .75em;
     margin-bottom: 5px !important;
-}
-
-#SignUp{
-    padding: 40px 20px;
-    margin-bottom: 10px;
 }
 
 #Login input::placeholder {
