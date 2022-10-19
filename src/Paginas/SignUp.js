@@ -107,7 +107,7 @@ function SignUp() {
                     <input type="password" placeholder='Confirmar senha' onChange={handleConfirmPassword} required></input>
 
                     <div id='info'>
-                        <p className='Info'>Esse site <strong>não</strong> é a versão original do Instagram. Portanto nunca use a mesma senha que você usa normalmente.</p>
+                        <p className='Info'>Esse site <strong>não</strong> é a versão original do Instagram. Portanto nunca use a mesma senha que você usa normalmente!</p>
                         
                         <p className='Info'><span>Para usar o direct, usamos verificação de e-mail. Portanto use seu <strong>e-mail real</strong>.</span></p>
 
